@@ -1,0 +1,13 @@
+{
+  "name": "arp_support",
+  "url" : "https://github.com/kaikoga/ArpSupport/",
+  "license": "MIT",
+  "tags": ["game"],
+  "description": "Supports ArpEngine with trivial utilities.",
+  "version": "0.1.0",
+  "classPath": "src/",
+  "releasenote": "Initial release.",
+  "contributors": ["kaikoga"],
+  "dependencies": {
+  }
+}
