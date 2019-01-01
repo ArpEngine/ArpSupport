@@ -12,14 +12,11 @@ class ArpXmlSeedReader {
 		ArpXmlSeedReader spec:
 		- Attributes:
 		  - All keyword attributes are ignored
-		  - All non-keyword attributes are ArpSeedSimpleAmbigiousValue
+		  - All non-keyword attributes are Ambigious ArpSimpleSeed
 		- Elements:
-		  - When an element has a "ref", it is an ArpSeedSimpleReferenceValue
-		  - Else, an element is a Literal
-			- ArpSeedSimpleObject if no child elements
-			  - Text nodes inside will become virtual element
-			- ArpSeedComplex if any child elements
-			  - Text nodes inside will become ArpSeedSimpleLiteralValue
+		  - When an element has a "ref" attribute, it is an Reference ArpSimpleSeed
+		  - Else, an element is am ArpComplexSeed
+		    - Text nodes inside will become Literal ArpSimpleSeed
 	 */
 
 	inline public function new() {
