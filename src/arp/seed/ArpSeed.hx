@@ -40,4 +40,24 @@ class ArpSeed {
 	public static function fromXml(xml:Xml, env:ArpSeedEnv = null):ArpSeed {
 		return new ArpXmlSeedReader().parse(xml, env);
 	}
+
+	inline public static function fromCsvBytes(bytes:Bytes, lexicalType:String = null, env:ArpSeedEnv = null):ArpSeed {
+		return new ArpCsvSeedReader().parseCsvBytes(bytes, lexicalType, env);
+	}
+
+	inline public static function fromCsvString(csvString:String, lexicalType:String = null, env:ArpSeedEnv = null):ArpSeed {
+		return new ArpCsvSeedReader().parseCsvString(csvString, lexicalType, env);
+	}
+
+	inline public static function fromTsvBytes(bytes:Bytes, lexicalType:String = null, env:ArpSeedEnv = null):ArpSeed {
+		return new ArpTsvSeedReader().parseTsvBytes(bytes, lexicalType, env);
+	}
+
+	inline public static function fromTsvString(csvString:String, lexicalType:String = null, env:ArpSeedEnv = null):ArpSeed {
+		return new ArpTsvSeedReader().parseTsvString(csvString, lexicalType, env);
+	}
+
+	public static function fromTable(table:Array<Array<String>>, lexicalType:String = null, env:ArpSeedEnv = null):ArpSeed {
+		return new ArpTableSeedReader().parse(table, lexicalType, env);
+	}
 }
