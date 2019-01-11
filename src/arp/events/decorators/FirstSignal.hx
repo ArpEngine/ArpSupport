@@ -17,6 +17,8 @@ class FirstSignal<T> implements IArpSignalOut<T> {
 	}
 
 	public function push(handler:T->Void):Int return this.output.push(handler);
+	public function prepend(handler:T->Void):Int return this.output.prepend(handler);
+	public function append(handler:T->Void):Int return this.output.append(handler);
 	public function remove(handler:T->Void):Bool return this.output.remove(handler);
 	public function flush():Void return this.output.flush();
 }

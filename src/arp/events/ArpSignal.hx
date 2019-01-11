@@ -11,6 +11,15 @@ class ArpSignal<T> implements IArpSignalOut<T> implements IArpSignalIn<T> {
 		return this.handlers.push(handler);
 	}
 
+	public function prepend(handler:T->Void):Int {
+		this.handlers.unshift(handler);
+		return this.handlers.length;
+	}
+
+	public function append(handler:T->Void):Int {
+		return this.handlers.push(handler);
+	}
+
 	public function remove(handler:T->Void):Bool {
 		return this.handlers.remove(handler);
 	}
