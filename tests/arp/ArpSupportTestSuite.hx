@@ -1,20 +1,13 @@
 package arp;
 
-import arp.iterators.StepToIteratorCase;
-import arp.iterators.StepIteratorCase;
-import arp.io.FifoCase;
-import arp.io.BytesToolCase;
-import arp.io.OutputWrapperCase;
-import arp.io.InputWrapperCase;
-import arp.ds.ListCase;
-import arp.ds.MapCase;
-import arp.ds.OmapCase;
-import arp.ds.SetCase;
 import arp.ds.impl.VoidCollectionCase;
 import arp.ds.lambda.ListOpCase;
 import arp.ds.lambda.MapOpCase;
 import arp.ds.lambda.OmapOpCase;
 import arp.ds.lambda.SetOpCase;
+import arp.ds.ListCase;
+import arp.ds.MapCase;
+import arp.ds.OmapCase;
 import arp.ds.proxy.ListProxyCase;
 import arp.ds.proxy.ListSelfProxyCase;
 import arp.ds.proxy.MapProxyCase;
@@ -24,19 +17,26 @@ import arp.ds.proxy.OmapSelfProxyCase;
 import arp.ds.proxy.ProxyCaseUtilCase;
 import arp.ds.proxy.SetProxyCase;
 import arp.ds.proxy.SetSelfProxyCase;
+import arp.ds.SetCase;
 import arp.events.ArpSignalCase;
+import arp.events.ArpSignalToolsCase;
+import arp.io.BytesToolCase;
+import arp.io.FifoCase;
+import arp.io.InputWrapperCase;
+import arp.io.OutputWrapperCase;
 import arp.iterators.ERegIteratorCase;
+import arp.iterators.StepIteratorCase;
+import arp.iterators.StepToIteratorCase;
 import arp.persistable.PersistIoCase;
 import arp.seed.ArpSeedCase;
 import arp.seed.ArpSeedEnvCase;
 import arp.task.TaskRunnerCase;
-import arp.utils.ArpStringUtilCase;
-import arp.utils.StringBufferCase;
-import picotest.PicoTestRunner;
-
 import arp.testParams.DsImplProviders.*;
 import arp.testParams.IoProviders.*;
 import arp.testParams.PersistIoProviders.*;
+import arp.utils.ArpStringUtilCase;
+import arp.utils.StringBufferCase;
+import picotest.PicoTestRunner;
 
 class ArpSupportTestSuite {
 
@@ -98,6 +98,7 @@ class ArpSupportTestSuite {
 		r.load(OmapOpCase, proxyOmapProvider());
 
 		r.load(ArpSignalCase);
+		r.load(ArpSignalToolsCase);
 
 		r.load(TaskRunnerCase);
 

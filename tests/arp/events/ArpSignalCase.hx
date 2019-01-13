@@ -48,4 +48,32 @@ class ArpSignalCase {
 		assertEquals(v, 0x110);
 	}
 
+	public function testDispatchOrder():Void {
+		var v:Array<Int>;
+		var a;
+		v = [];
+		this.signal.dispatch(0);
+		assertMatch(v, []);
+		v = [];
+		this.signal.push(a = _ -> v.push(0));
+		this.signal.dispatch(0);
+		assertMatch(v, [0]);
+		v = [];
+		this.signal.push(_ -> v.push(1));
+		this.signal.dispatch(0);
+		assertMatch(v, [0, 1]);
+		v = [];
+		this.signal.append(_ -> v.push(2));
+		this.signal.dispatch(0);
+		assertMatch(v, [0, 1, 2]);
+		v = [];
+		this.signal.prepend(_ -> v.push(3));
+		this.signal.dispatch(0);
+		assertMatch(v, [3, 0, 1, 2]);
+		v = [];
+		this.signal.remove(a);
+		this.signal.dispatch(0);
+		assertMatch(v, [3, 1, 2]);
+	}
+
 }
