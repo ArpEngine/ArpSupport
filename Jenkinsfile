@@ -22,18 +22,6 @@ pipeline {
                 sh "ARPCI_PROJECT=ArpSupport ARPCI_TARGET=js haxelib run arp_ci test"
             }
         }
-
-        stage('neko') {
-            steps {
-                sh "ARPCI_PROJECT=ArpSupport ARPCI_TARGET=neko haxelib run arp_ci test"
-            }
-        }
-
-        stage('cpp') {
-            steps {
-                sh "ARPCI_PROJECT=ArpSupport ARPCI_TARGET=cpp haxelib run arp_ci test"
-            }
-        }
     }
 
     post {
