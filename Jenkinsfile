@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('prepare') {
             steps {
-                githubNotify(context: 'flash', description: '', status: 'PENDING');
+                githubNotify(context: 'swf', description: '', status: 'PENDING');
                 githubNotify(context: 'js', description: '', status: 'PENDING');
                 sh "haxelib newrepo"
                 sh "haxelib git arp_ci https://github.com/ArpEngine/Arp-ci master --always"
@@ -13,13 +13,13 @@ pipeline {
             }
         }
 
-        stage('flash') {
+        stage('swf') {
             steps {
                 sh "ARPCI_PROJECT=ArpSupport ARPCI_TARGET=swf haxelib run arp_ci test"
             }
             post {
-                success { githubNotify(context: 'flash', description: '', status: 'SUCCESS'); }
-                unsuccessful { githubNotify(context: 'flash', description: '', status: 'FAILURE'); }
+                success { githubNotify(context: 'swf', description: '', status: 'SUCCESS'); }
+                unsuccessful { githubNotify(context: 'swf', description: '', status: 'FAILURE'); }
             }
         }
 
