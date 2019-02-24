@@ -18,8 +18,8 @@ pipeline {
                 sh "ARPCI_PROJECT=ArpSupport ARPCI_TARGET=swf haxelib run arp_ci test"
             }
             post {
-                success { githubNotify(context: 'swf', description: '', status: 'SUCCESS'); }
-                unsuccessful { githubNotify(context: 'swf', description: '', status: 'FAILURE'); }
+                success { githubNotify(context: "${STAGE_NAME}", description: '', status: 'SUCCESS'); }
+                unsuccessful { githubNotify(context: "${STAGE_NAME}", description: '', status: 'FAILURE'); }
             }
         }
 
@@ -28,8 +28,8 @@ pipeline {
                 sh "ARPCI_PROJECT=ArpSupport ARPCI_TARGET=js haxelib run arp_ci test"
             }
             post {
-                success { githubNotify(context: 'js', description: '', status: 'SUCCESS'); }
-                unsuccessful { githubNotify(context: 'js', description: '', status: 'FAILURE'); }
+                success { githubNotify(context: "${STAGE_NAME}", description: '', status: 'SUCCESS'); }
+                unsuccessful { githubNotify(context: "${STAGE_NAME}", description: '', status: 'FAILURE'); }
             }
         }
     }
