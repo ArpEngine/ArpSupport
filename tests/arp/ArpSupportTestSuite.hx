@@ -34,6 +34,7 @@ import arp.task.TaskRunnerCase;
 import arp.testParams.DsImplProviders.*;
 import arp.testParams.IoProviders.*;
 import arp.testParams.PersistIoProviders.*;
+import arp.utils.ArpIntUtilCase;
 import arp.utils.ArpStringUtilCase;
 import arp.utils.StringBufferCase;
 import picotest.PicoTestRunner;
@@ -45,6 +46,7 @@ class ArpSupportTestSuite {
 		r.load(StepIteratorCase);
 		r.load(StepToIteratorCase);
 
+		r.load(ArpIntUtilCase);
 		r.load(ArpStringUtilCase);
 		r.load(StringBufferCase);
 
