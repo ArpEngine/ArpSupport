@@ -1,6 +1,6 @@
 package arp.io;
 
-import arp.io.InputWrapper.InputWrapperBase;
+import arp.io.impl.InputWrapperBase;
 import haxe.io.Bytes;
 import haxe.io.BytesInput;
 
