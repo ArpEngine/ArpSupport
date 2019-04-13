@@ -47,10 +47,10 @@ class ArpXmlSeedReader {
 		var typeName:String = xml.nodeName;
 		var className:String = null;
 		var name:String = null;
-		var ref:String = null;
 		var heat:String = null;
 		var key:String = uniqId;
 		var value:String = null;
+		var isRef:Bool = false;
 		var textNodeValue:String = null;
 		var acceptsTextNodeValue:Bool = true;
 		var children:Array<ArpSeed> = null;
@@ -66,7 +66,8 @@ class ArpXmlSeedReader {
 				case "name", "id":
 					name = attr;
 				case "ref":
-					ref = attr;
+					value = attr;
+					isRef = true;
 				case "heat":
 					heat = attr;
 				case "key":
@@ -81,7 +82,7 @@ class ArpXmlSeedReader {
 			}
 		}
 
-		if (ref != null) return new ArpSimpleSeed(typeName, key, ref, env, ArpSeedValueKind.Reference);
+		if (isRef) return new ArpSimpleSeed(typeName, key, value, env, ArpSeedValueKind.Reference);
 
 		for (node in xml) {
 			switch (node.nodeType) {
