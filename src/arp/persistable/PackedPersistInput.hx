@@ -22,14 +22,19 @@ class PackedPersistInput implements IPersistInput {
 		return nameList;
 	}
 	public function readPersistable<T:IPersistable>(name:String, persistable:T):T {
-		var input:IPersistInput = this.readEnter(name);
-		persistable.readSelf(input);
-		input.readExit();
+		this.readEnter(name);
+		persistable.readSelf(this);
+		this.readExit();
 		return persistable;
 	}
 
-	public function readEnter(name:String):IPersistInput return this;
+	public function readEnter(name:String):Void return;
 	public function readExit():Void return;
+	public function readScope(name:String, body:IPersistInput->Void):Void {
+		this.readEnter(name);
+		body(this);
+		this.readExit();
+	}
 
 	public function readBool(name:String):Bool return this._input.readBool();
 	public function readInt32(name:String):Int return this._input.readInt32();

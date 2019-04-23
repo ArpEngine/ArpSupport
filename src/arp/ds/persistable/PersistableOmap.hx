@@ -29,26 +29,26 @@ class PersistableOmapTool {
 	inline public static function readPersistableOmap<V:IMappedPersistable>(omap:IOmap<String, V>, input:IPersistInput, proto:V):Void {
 		omap.clear();
 		var nameList:Array<String> = input.readNameList("names");
-		var values:IPersistInput = input.readEnter("values");
+		input.readEnter("values");
 		for (name in nameList) {
 			var element:V = omap.get(name);
 			if (element == null) {
 				element = cast proto.clonePersistable(name);
 				omap.addPair(name, element);
 			}
-			values.readPersistable(name, element);
+			input.readPersistable(name, element);
 		}
-		values.readExit();
+		input.readExit();
 	}
 
 	inline public static function writePersistableOmap<V:IMappedPersistable>(omap:IOmap<String, V>, output:IPersistOutput):Void {
 		var nameList:Array<String> = [for (name in omap.keys()) name];
 		output.writeNameList("names", nameList);
-		var values:IPersistOutput = output.writeEnter("values");
+		output.writeEnter("values");
 		for (name in nameList) {
-			values.writePersistable(name, omap.get(name));
+			output.writePersistable(name, omap.get(name));
 		}
-		values.writeExit();
+		output.writeExit();
 	}
 
 }

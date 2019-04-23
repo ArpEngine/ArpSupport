@@ -25,12 +25,16 @@ class AnonPersistInput implements IPersistInput {
 		return persistable;
 	}
 
-	public function readEnter(name:String):IPersistInput {
+	public function readEnter(name:String):Void {
 		this.dataStack.push(this._data);
 		this._data = Reflect.field(this._data, name);
-		return this;
 	}
 	public function readExit():Void this._data = this.dataStack.pop();
+	public function readScope(name:String, body:IPersistInput->Void):Void {
+		this.readEnter(name);
+		body(this);
+		this.readExit();
+	}
 
 	public function readBool(name:String):Bool return Reflect.field(this._data, name);
 	public function readInt32(name:String):Int return Reflect.field(this._data, name);

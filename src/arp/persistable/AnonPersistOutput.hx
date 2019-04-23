@@ -30,14 +30,18 @@ class AnonPersistOutput implements IPersistOutput {
 		this.writeExit();
 	}
 
-	public function writeEnter(name:String):IPersistOutput {
+	public function writeEnter(name:String):Void {
 		this.dataStack.push(this._data);
 		var data = {}
 		Reflect.setField(this._data, name, data);
 		this._data = data;
-		return this;
 	}
 	public function writeExit():Void this._data = this.dataStack.pop();
+	public function writeScope(name:String, body:IPersistOutput->Void):Void {
+		this.writeEnter(name);
+		body(this);
+		this.writeExit();
+	}
 
 	public function writeBool(name:String, value:Bool):Void Reflect.setField(this._data, name, value);
 	public function writeInt32(name:String, value:Int):Void Reflect.setField(this._data, name, value);

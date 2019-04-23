@@ -8,8 +8,9 @@ interface IPersistOutput {
 
 	function genName():String;
 
-	function writeEnter(name:String):IPersistOutput;
+	function writeEnter(name:String):Void;
 	function writeExit():Void;
+	function writeScope(name:String, body:IPersistOutput->Void):Void;
 
 	function writeNameList(name:String, value:Array<String>):Void;
 	function writePersistable(name:String, value:IPersistable):Void;

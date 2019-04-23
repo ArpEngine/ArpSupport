@@ -6,8 +6,9 @@ interface IPersistInput {
 
 	var persistLevel(get, never):Int;
 
-	function readEnter(name:String):IPersistInput;
+	function readEnter(name:String):Void;
 	function readExit():Void;
+	function readScope(name:String, body:IPersistInput->Void):Void;
 
 	function readNameList(name:String):Array<String>;
 	function readPersistable<T:IPersistable>(name:String, persistable:T):T;
