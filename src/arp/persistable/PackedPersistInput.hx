@@ -28,7 +28,7 @@ class PackedPersistInput implements IPersistInput {
 		return persistable;
 	}
 
-	public function readEnter(name:String):IPersistInput return new PackedPersistInput(this._input, this._persistLevel);
+	public function readEnter(name:String):IPersistInput return this;
 	public function readExit():Void return;
 
 	public function readBool(name:String):Bool return this._input.readBool();

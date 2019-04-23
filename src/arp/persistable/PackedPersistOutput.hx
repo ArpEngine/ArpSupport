@@ -29,7 +29,7 @@ class PackedPersistOutput implements IPersistOutput {
 		output.writeExit();
 	}
 
-	public function writeEnter(name:String):IPersistOutput return new PackedPersistOutput(this._output, this._persistLevel);
+	public function writeEnter(name:String):IPersistOutput return this;
 	public function writeExit():Void return;
 
 	public function writeBool(name:String, value:Bool):Void this._output.writeBool(value);

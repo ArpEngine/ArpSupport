@@ -5,6 +5,7 @@ import haxe.io.Bytes;
 class AnonPersistInput implements IPersistInput {
 
 	private var _data:Dynamic;
+	private var dataStack:Array<Dynamic>;
 
 	private var _persistLevel:Int = 0;
 	public var persistLevel(get, never):Int;
@@ -12,19 +13,24 @@ class AnonPersistInput implements IPersistInput {
 
 	public function new(data:Dynamic, persistLevel:Int = 0) {
 		this._data = data;
+		this.dataStack = [];
 		this._persistLevel = persistLevel;
 	}
 
 	public function readNameList(name:String):Array<String> return Reflect.field(this._data, name);
 	public function readPersistable<T:IPersistable>(name:String, persistable:T):T {
-		var input:IPersistInput = this.readEnter(name);
-		persistable.readSelf(input);
-		input.readExit();
+		this.readEnter(name);
+		persistable.readSelf(this);
+		this.readExit();
 		return persistable;
 	}
 
-	public function readEnter(name:String):IPersistInput return new AnonPersistInput(Reflect.field(this._data, name), this._persistLevel);
-	public function readExit():Void return;
+	public function readEnter(name:String):IPersistInput {
+		this.dataStack.push(this._data);
+		this._data = Reflect.field(this._data, name);
+		return this;
+	}
+	public function readExit():Void this._data = this.dataStack.pop();
 
 	public function readBool(name:String):Bool return Reflect.field(this._data, name);
 	public function readInt32(name:String):Int return Reflect.field(this._data, name);

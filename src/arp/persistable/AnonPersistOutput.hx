@@ -1,6 +1,5 @@
 package arp.persistable;
 
-import haxe.io.BytesOutput;
 import haxe.io.Bytes;
 
 class AnonPersistOutput implements IPersistOutput {
@@ -8,7 +7,8 @@ class AnonPersistOutput implements IPersistOutput {
 	private var _data:Dynamic;
 	public var data(get, never):Dynamic;
 	private function get_data():Dynamic return this._data;
-	private var _keys:Array<String>;
+
+	private var dataStack:Array<Dynamic>;
 
 	private var _persistLevel:Int = 0;
 	public var persistLevel(get, never):Int;
@@ -16,6 +16,7 @@ class AnonPersistOutput implements IPersistOutput {
 
 	public function new(data:Dynamic = null, persistLevel:Int = 0) {
 		this._data = (data != null) ? data : {};
+		this.dataStack = [];
 		this._persistLevel = persistLevel;
 	}
 
@@ -24,17 +25,19 @@ class AnonPersistOutput implements IPersistOutput {
 
 	public function writeNameList(name:String, value:Array<String>):Void Reflect.setField(this._data, name, value);
 	public function writePersistable(name:String, persistable:IPersistable):Void {
-		var output:IPersistOutput = this.writeEnter(name);
-		persistable.writeSelf(output);
-		output.writeExit();
+		this.writeEnter(name);
+		persistable.writeSelf(this);
+		this.writeExit();
 	}
 
 	public function writeEnter(name:String):IPersistOutput {
-		var output:AnonPersistOutput = new AnonPersistOutput(null, this._persistLevel);
-		Reflect.setField(this._data, name, output.data);
-		return output;
+		this.dataStack.push(this._data);
+		var data = {}
+		Reflect.setField(this._data, name, data);
+		this._data = data;
+		return this;
 	}
-	public function writeExit():Void return;
+	public function writeExit():Void this._data = this.dataStack.pop();
 
 	public function writeBool(name:String, value:Bool):Void Reflect.setField(this._data, name, value);
 	public function writeInt32(name:String, value:Int):Void Reflect.setField(this._data, name, value);
