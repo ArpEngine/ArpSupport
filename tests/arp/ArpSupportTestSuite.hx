@@ -27,6 +27,9 @@ import arp.io.OutputWrapperCase;
 import arp.iterators.ERegIteratorCase;
 import arp.iterators.StepIteratorCase;
 import arp.iterators.StepToIteratorCase;
+import arp.persistable.AnonPersistIoCase;
+import arp.persistable.JsonPersistIoCase;
+import arp.persistable.PackedPersistIoCase;
 import arp.persistable.PersistIoCase;
 import arp.seed.ArpSeedCase;
 import arp.seed.ArpSeedEnvCase;
@@ -105,6 +108,9 @@ class ArpSupportTestSuite {
 		r.load(TaskRunnerCase);
 
 		r.load(PersistIoCase, persistIoProvider());
+		r.load(AnonPersistIoCase);
+		r.load(JsonPersistIoCase);
+		r.load(PackedPersistIoCase);
 
 		r.load(ArpSeedEnvCase);
 		r.load(ArpSeedCase);

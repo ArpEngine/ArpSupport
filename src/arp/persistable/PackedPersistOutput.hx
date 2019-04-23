@@ -30,12 +30,14 @@ class PackedPersistOutput implements IPersistOutput {
 	}
 
 	public function writeEnter(name:String):Void return;
+	public function writeListEnter(name:String):Void this.writeEnter(name);
 	public function writeExit():Void return;
 	public function writeScope(name:String, body:IPersistOutput->Void):Void {
 		this.writeEnter(name);
 		body(this);
 		this.writeExit();
 	}
+	public function writeListScope(name:String, body:IPersistOutput->Void):Void this.writeScope(name, body);
 
 	public function writeBool(name:String, value:Bool):Void this._output.writeBool(value);
 	public function writeInt32(name:String, value:Int):Void this._output.writeInt32(value);
@@ -44,4 +46,12 @@ class PackedPersistOutput implements IPersistOutput {
 
 	public function writeUtf(name:String, value:String):Void this._output.writeUtfBlob(value);
 	public function writeBlob(name:String, bytes:Bytes):Void this._output.writeBlob(bytes);
+
+	public function pushBool(value:Bool):Void this.writeBool(null, value);
+	public function pushInt32(value:Int):Void this.writeInt32(null, value);
+	public function pushUInt32(value:UInt):Void this.writeUInt32(null, value);
+	public function pushDouble(value:Float):Void this.writeDouble(null, value);
+
+	public function pushUtf(value:String):Void this.writeUtf(null, value);
+	public function pushBlob(value:Bytes):Void this.writeBlob(null, value);
 }

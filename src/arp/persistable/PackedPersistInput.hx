@@ -29,12 +29,14 @@ class PackedPersistInput implements IPersistInput {
 	}
 
 	public function readEnter(name:String):Void return;
+	public function readListEnter(name:String):Void this.readEnter(name);
 	public function readExit():Void return;
 	public function readScope(name:String, body:IPersistInput->Void):Void {
 		this.readEnter(name);
 		body(this);
 		this.readExit();
 	}
+	public function readListScope(name:String, body:IPersistInput->Void):Void this.readScope(name, body);
 
 	public function readBool(name:String):Bool return this._input.readBool();
 	public function readInt32(name:String):Int return this._input.readInt32();
@@ -43,4 +45,12 @@ class PackedPersistInput implements IPersistInput {
 
 	public function readUtf(name:String):String return this._input.readUtfBlob();
 	public function readBlob(name:String):Bytes return this._input.readBlob();
+
+	public function nextBool():Bool return this.readBool(null);
+	public function nextInt32():Int return this.readInt32(null);
+	public function nextUInt32():UInt return this.readUInt32(null);
+	public function nextDouble():Float return this.readDouble(null);
+
+	public function nextUtf():String return this.readUtf(null);
+	public function nextBlob():Bytes return this.readBlob(null);
 }

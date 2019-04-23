@@ -7,8 +7,10 @@ interface IPersistInput {
 	var persistLevel(get, never):Int;
 
 	function readEnter(name:String):Void;
+	function readListEnter(name:String):Void;
 	function readExit():Void;
 	function readScope(name:String, body:IPersistInput->Void):Void;
+	function readListScope(name:String, body:IPersistInput->Void):Void;
 
 	function readNameList(name:String):Array<String>;
 	function readPersistable<T:IPersistable>(name:String, persistable:T):T;
@@ -20,5 +22,13 @@ interface IPersistInput {
 
 	function readUtf(name:String):String;
 	function readBlob(name:String):Bytes;
+
+	function nextBool():Bool;
+	function nextInt32():Int;
+	function nextUInt32():UInt;
+	function nextDouble():Float;
+
+	function nextUtf():String;
+	function nextBlob():Bytes;
 }
 
