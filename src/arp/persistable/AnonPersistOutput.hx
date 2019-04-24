@@ -68,7 +68,7 @@ class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutpu
 	public function pushDouble(value:Float):Void this.writeDouble(nextName(), value);
 
 	public function pushUtf(value:String):Void this.writeUtf(nextName(), value);
-	public function pushBlob(value:Bytes):Void this.writeBlob(nextName(), value);
+	public function pushBlob(bytes:Bytes):Void this.writeBlob(nextName(), bytes);
 	public function pushAny(value:Dynamic):Void this.writeAny(nextName(), value);
 }
 
