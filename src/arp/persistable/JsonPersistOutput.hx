@@ -1,12 +1,13 @@
 package arp.persistable;
 
+import arp.persistable.impl.IObjectPersistOutput;
 import haxe.crypto.Base64;
 import haxe.io.Bytes;
 import haxe.Json;
 
 class JsonPersistOutput implements IPersistOutput {
 
-	private var output:IPersistOutput;
+	private var output:IObjectPersistOutput;
 	private var anon:AnonPersistOutput;
 
 	private var _persistLevel:Int = 0;
@@ -22,10 +23,8 @@ class JsonPersistOutput implements IPersistOutput {
 		this._persistLevel = persistLevel;
 	}
 
-	public function writeBlob(name:String, bytes:Bytes):Void {
-		Reflect.setField(this.anon.data, name, Base64.encode(bytes));
-	}
-	public function pushBlob(bytes:Bytes):Void this.writeBlob(@:privateAccess this.anon.nextName(), bytes);
+	public function writeBlob(name:String, bytes:Bytes):Void this.output.writeAny(name, Base64.encode(bytes));
+	public function pushBlob(bytes:Bytes):Void this.output.pushAny(Base64.encode(bytes));
 
 	public function writePersistable(name:String, persistable:IPersistable):Void {
 		this.writeEnter(name);

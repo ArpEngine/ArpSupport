@@ -1,8 +1,9 @@
 package arp.persistable;
 
+import arp.persistable.impl.IObjectPersistOutput;
 import haxe.io.Bytes;
 
-class AnonPersistOutput implements IPersistOutput {
+class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutput {
 
 	private var _data:Dynamic;
 	public var data(get, never):Dynamic;
@@ -59,6 +60,7 @@ class AnonPersistOutput implements IPersistOutput {
 
 	public function writeUtf(name:String, value:String):Void Reflect.setField(this._data, name, value);
 	public function writeBlob(name:String, bytes:Bytes):Void Reflect.setField(this._data, name, bytes);
+	public function writeAny(name:String, value:Dynamic):Void Reflect.setField(this._data, name, value);
 
 	public function pushBool(value:Bool):Void this.writeBool(nextName(), value);
 	public function pushInt32(value:Int):Void this.writeInt32(nextName(), value);
@@ -67,5 +69,6 @@ class AnonPersistOutput implements IPersistOutput {
 
 	public function pushUtf(value:String):Void this.writeUtf(nextName(), value);
 	public function pushBlob(value:Bytes):Void this.writeBlob(nextName(), value);
+	public function pushAny(value:Dynamic):Void this.writeAny(nextName(), value);
 }
 

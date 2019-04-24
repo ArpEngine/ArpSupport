@@ -1,8 +1,9 @@
 package arp.persistable;
 
+import arp.persistable.impl.IObjectPersistInput;
 import haxe.io.Bytes;
 
-class AnonPersistInput implements IPersistInput {
+class AnonPersistInput implements IPersistInput implements IObjectPersistInput {
 
 	private var _data:Dynamic;
 
@@ -56,6 +57,7 @@ class AnonPersistInput implements IPersistInput {
 
 	public function readUtf(name:String):String return Reflect.field(this._data, name);
 	public function readBlob(name:String):Bytes return Reflect.field(this._data, name);
+	public function readAny(name:String):Dynamic return Reflect.field(this._data, name);
 
 	public function nextBool():Bool return this.readBool(nextName());
 	public function nextInt32():Int return this.readInt32(nextName());
@@ -64,5 +66,6 @@ class AnonPersistInput implements IPersistInput {
 
 	public function nextUtf():String return this.readUtf(nextName());
 	public function nextBlob():Bytes return this.readBlob(nextName());
+	public function nextAny():Dynamic return this.readAny(nextName());
 }
 

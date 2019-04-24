@@ -1,14 +1,13 @@
 package arp.persistable;
 
+import arp.persistable.impl.IObjectPersistInput;
 import haxe.crypto.Base64;
 import haxe.io.Bytes;
 import haxe.Json;
 
-@:access(arp.persistable.AnonPersistInput._data)
-
 class JsonPersistInput implements IPersistInput {
 
-	private var input:IPersistInput;
+	private var input:IObjectPersistInput;
 	private var anon:AnonPersistInput;
 
 	private var _persistLevel:Int = 0;
@@ -22,10 +21,8 @@ class JsonPersistInput implements IPersistInput {
 		this._persistLevel = persistLevel;
 	}
 
-	public function readBlob(name:String):Bytes {
-		return Base64.decode(Reflect.field(this.anon._data, name));
-	}
-	public function nextBlob():Bytes return this.readBlob(@:privateAccess this.anon.nextName());
+	public function readBlob(name:String):Bytes return Base64.decode(this.input.readAny(name));
+	public function nextBlob():Bytes return Base64.decode(this.input.nextAny());
 
 	public function readPersistable<T:IPersistable>(name:String, persistable:T):T {
 		this.readEnter(name);
