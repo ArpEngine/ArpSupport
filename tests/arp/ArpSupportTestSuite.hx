@@ -28,6 +28,7 @@ import arp.iterators.ERegIteratorCase;
 import arp.iterators.StepIteratorCase;
 import arp.iterators.StepToIteratorCase;
 import arp.persistable.AnonPersistIoCase;
+import arp.persistable.ArrayPersistIoCase;
 import arp.persistable.JsonPersistIoCase;
 import arp.persistable.PackedPersistIoCase;
 import arp.persistable.PersistIoCase;
@@ -109,6 +110,7 @@ class ArpSupportTestSuite {
 
 		r.load(PersistIoCase, persistIoProvider());
 		r.load(AnonPersistIoCase);
+		r.load(ArrayPersistIoCase);
 		r.load(JsonPersistIoCase);
 		r.load(PackedPersistIoCase);
 
