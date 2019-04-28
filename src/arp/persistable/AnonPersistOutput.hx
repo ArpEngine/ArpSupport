@@ -43,18 +43,12 @@ class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutpu
 	public function writeNameList(name:String, value:Array<String>):Void Reflect.setField(this._data, name, value);
 
 	public function writeEnter(name:String):Void {
-		this.dataStack.push(this._data);
-		this.idStack.push(this.uniqId);
-		this.uniqId = 0;
-		var data = {}
-		Reflect.setField(this._data, name, data);
-		this._data = data;
+		var data = {};
+		this.writeAny(name, data);
+		this.pushState(data);
 	}
 	public function writeListEnter(name:String):Void this.writeEnter(name);
-	public function writeExit():Void {
-		this._data = this.dataStack.pop();
-		this.uniqId = this.idStack.pop();
-	}
+	public function writeExit():Void this.popState();
 
 	public function writeBool(name:String, value:Bool):Void Reflect.setField(this._data, name, value);
 	public function writeInt32(name:String, value:Int):Void Reflect.setField(this._data, name, value);

@@ -40,17 +40,9 @@ class AnonPersistInput implements IPersistInput implements IObjectPersistInput {
 
 	public function readNameList(name:String):Array<String> return Reflect.field(this._data, name);
 
-	public function readEnter(name:String):Void {
-		this.dataStack.push(this._data);
-		this.idStack.push(this.uniqId);
-		this.uniqId = 0;
-		this._data = Reflect.field(this._data, name);
-	}
+	public function readEnter(name:String):Void this.pushState(this.readAny(name));
 	public function readListEnter(name:String):Void this.readEnter(name);
-	public function readExit():Void {
-		this._data = this.dataStack.pop();
-		this.uniqId = this.idStack.pop();
-	}
+	public function readExit():Void this.popState();
 
 	public function readBool(name:String):Bool return Reflect.field(this._data, name);
 	public function readInt32(name:String):Int return Reflect.field(this._data, name);
