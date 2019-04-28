@@ -9,11 +9,8 @@ interface IPersistOutput {
 	function writeEnter(name:String):Void;
 	function writeListEnter(name:String):Void;
 	function writeExit():Void;
-	function writeScope(name:String, body:IPersistOutput->Void):Void;
-	function writeListScope(name:String, body:IPersistOutput->Void):Void;
 
 	function writeNameList(name:String, value:Array<String>):Void;
-	function writePersistable(name:String, value:IPersistable):Void;
 
 	function writeBool(name:String, value:Bool):Void;
 	function writeInt32(name:String, value:Int):Void;
@@ -30,5 +27,8 @@ interface IPersistOutput {
 
 	function pushUtf(value:String):Void;
 	function pushBlob(bytes:Bytes):Void;
-}
 
+	function writePersistable(name:String, value:IPersistable):Void;
+	function writeScope(name:String, body:IPersistOutput->Void):Void;
+	function writeListScope(name:String, body:IPersistOutput->Void):Void;
+}

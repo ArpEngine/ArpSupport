@@ -1,6 +1,7 @@
 package arp.persistable;
 
 import arp.persistable.impl.IObjectPersistInput;
+import arp.persistable.lambda.PersistInputTools;
 import haxe.crypto.Base64;
 import haxe.io.Bytes;
 import haxe.Json;
@@ -32,13 +33,6 @@ class JsonPersistInput implements IPersistInput {
 	public function readBlob(name:String):Bytes return Base64.decode(this.input.readAny(name));
 	public function nextBlob():Bytes return Base64.decode(this.input.nextAny());
 
-	public function readPersistable<T:IPersistable>(name:String, persistable:T):T {
-		this.readEnter(name);
-		persistable.readSelf(this);
-		this.readExit();
-		return persistable;
-	}
-
 	public function readEnter(name:String):Void {
 		var inner:Dynamic = this.input.readAny(name);
 		if (this.input != this.anon) this.anon.pushState(null);
@@ -57,16 +51,6 @@ class JsonPersistInput implements IPersistInput {
 			this.input = if (this.input == this.array) this.anon else this.array;
 		}
 	}
-	public function readScope(name:String, body:IPersistInput->Void):Void {
-		this.readEnter(name);
-		body(this);
-		this.readExit();
-	}
-	public function readListScope(name:String, body:IPersistInput->Void):Void {
-		this.readListEnter(name);
-		body(this);
-		this.readExit();
-	}
 
 	public function readNameList(name:String):Array<String> return this.input.readNameList(name);
 
@@ -83,4 +67,9 @@ class JsonPersistInput implements IPersistInput {
 	public function nextDouble():Float return this.input.nextDouble();
 
 	public function nextUtf():String return this.input.nextUtf();
+
+
+	public function readPersistable<T:IPersistable>(name:String, persistable:T):T return PersistInputTools.readPersistableImpl(this, name, persistable);
+	public function readScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readScopeImpl(this, name, body);
+	public function readListScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readListScopeImpl(this, name, body);
 }

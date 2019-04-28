@@ -1,5 +1,6 @@
 package arp.persistable;
 
+import arp.persistable.lambda.PersistOutputTools;
 import haxe.io.Bytes;
 import arp.io.IOutput;
 
@@ -23,21 +24,10 @@ class PackedPersistOutput implements IPersistOutput {
 		this._output.writeUInt32(value.length);
 		for (v in value) this._output.writeUtfBlob(v);
 	}
-	public function writePersistable(name:String, persistable:IPersistable):Void {
-		this.writeEnter(name);
-		persistable.writeSelf(this);
-		this.writeExit();
-	}
 
 	public function writeEnter(name:String):Void return;
 	public function writeListEnter(name:String):Void this.writeEnter(name);
 	public function writeExit():Void return;
-	public function writeScope(name:String, body:IPersistOutput->Void):Void {
-		this.writeEnter(name);
-		body(this);
-		this.writeExit();
-	}
-	public function writeListScope(name:String, body:IPersistOutput->Void):Void this.writeScope(name, body);
 
 	public function writeBool(name:String, value:Bool):Void this._output.writeBool(value);
 	public function writeInt32(name:String, value:Int):Void this._output.writeInt32(value);
@@ -54,4 +44,8 @@ class PackedPersistOutput implements IPersistOutput {
 
 	public function pushUtf(value:String):Void this.writeUtf(null, value);
 	public function pushBlob(value:Bytes):Void this.writeBlob(null, value);
+
+	public function writePersistable(name:String, value:IPersistable):Void PersistOutputTools.writePersistableImpl(this, name, value);
+	public function writeScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeScopeImpl(this, name, body);
+	public function writeListScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeListScopeImpl(this, name, body);
 }

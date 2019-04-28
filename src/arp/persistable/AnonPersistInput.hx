@@ -1,6 +1,7 @@
 package arp.persistable;
 
 import arp.persistable.impl.IObjectPersistInput;
+import arp.persistable.lambda.PersistInputTools;
 import haxe.io.Bytes;
 
 class AnonPersistInput implements IPersistInput implements IObjectPersistInput {
@@ -38,12 +39,6 @@ class AnonPersistInput implements IPersistInput implements IObjectPersistInput {
 	}
 
 	public function readNameList(name:String):Array<String> return Reflect.field(this._data, name);
-	public function readPersistable<T:IPersistable>(name:String, persistable:T):T {
-		this.readEnter(name);
-		persistable.readSelf(this);
-		this.readExit();
-		return persistable;
-	}
 
 	public function readEnter(name:String):Void {
 		this.dataStack.push(this._data);
@@ -56,12 +51,6 @@ class AnonPersistInput implements IPersistInput implements IObjectPersistInput {
 		this._data = this.dataStack.pop();
 		this.uniqId = this.idStack.pop();
 	}
-	public function readScope(name:String, body:IPersistInput->Void):Void {
-		this.readEnter(name);
-		body(this);
-		this.readExit();
-	}
-	public function readListScope(name:String, body:IPersistInput->Void):Void this.readScope(name, body);
 
 	public function readBool(name:String):Bool return Reflect.field(this._data, name);
 	public function readInt32(name:String):Int return Reflect.field(this._data, name);
@@ -80,5 +69,8 @@ class AnonPersistInput implements IPersistInput implements IObjectPersistInput {
 	public function nextUtf():String return this.readUtf(nextName());
 	public function nextBlob():Bytes return this.readBlob(nextName());
 	public function nextAny():Dynamic return this.readAny(nextName());
-}
 
+	public function readPersistable<T:IPersistable>(name:String, persistable:T):T return PersistInputTools.readPersistableImpl(this, name, persistable);
+	public function readScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readScopeImpl(this, name, body);
+	public function readListScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readListScopeImpl(this, name, body);
+}

@@ -1,5 +1,6 @@
 package arp.persistable;
 
+import arp.persistable.lambda.PersistInputTools;
 import haxe.io.Bytes;
 import arp.io.IInput;
 
@@ -21,22 +22,10 @@ class PackedPersistInput implements IPersistInput {
 		for (i in 0...this._input.readUInt32()) nameList.push(this._input.readUtfBlob());
 		return nameList;
 	}
-	public function readPersistable<T:IPersistable>(name:String, persistable:T):T {
-		this.readEnter(name);
-		persistable.readSelf(this);
-		this.readExit();
-		return persistable;
-	}
 
 	public function readEnter(name:String):Void return;
 	public function readListEnter(name:String):Void this.readEnter(name);
 	public function readExit():Void return;
-	public function readScope(name:String, body:IPersistInput->Void):Void {
-		this.readEnter(name);
-		body(this);
-		this.readExit();
-	}
-	public function readListScope(name:String, body:IPersistInput->Void):Void this.readScope(name, body);
 
 	public function readBool(name:String):Bool return this._input.readBool();
 	public function readInt32(name:String):Int return this._input.readInt32();
@@ -53,4 +42,8 @@ class PackedPersistInput implements IPersistInput {
 
 	public function nextUtf():String return this.readUtf(null);
 	public function nextBlob():Bytes return this.readBlob(null);
+
+	public function readPersistable<T:IPersistable>(name:String, persistable:T):T return PersistInputTools.readPersistableImpl(this, name, persistable);
+	public function readScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readScopeImpl(this, name, body);
+	public function readListScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readListScopeImpl(this, name, body);
 }

@@ -1,6 +1,7 @@
 package arp.persistable;
 
 import arp.persistable.impl.IObjectPersistOutput;
+import arp.persistable.lambda.PersistOutputTools;
 import haxe.io.Bytes;
 
 class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutput {
@@ -40,11 +41,6 @@ class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutpu
 	}
 
 	public function writeNameList(name:String, value:Array<String>):Void Reflect.setField(this._data, name, value);
-	public function writePersistable(name:String, persistable:IPersistable):Void {
-		this.writeEnter(name);
-		persistable.writeSelf(this);
-		this.writeExit();
-	}
 
 	public function writeEnter(name:String):Void {
 		this.dataStack.push(this._data);
@@ -59,12 +55,6 @@ class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutpu
 		this._data = this.dataStack.pop();
 		this.uniqId = this.idStack.pop();
 	}
-	public function writeScope(name:String, body:IPersistOutput->Void):Void {
-		this.writeEnter(name);
-		body(this);
-		this.writeExit();
-	}
-	public function writeListScope(name:String, body:IPersistOutput->Void):Void this.writeScope(name, body);
 
 	public function writeBool(name:String, value:Bool):Void Reflect.setField(this._data, name, value);
 	public function writeInt32(name:String, value:Int):Void Reflect.setField(this._data, name, value);
@@ -83,5 +73,8 @@ class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutpu
 	public function pushUtf(value:String):Void this.writeUtf(nextName(), value);
 	public function pushBlob(bytes:Bytes):Void this.writeBlob(nextName(), bytes);
 	public function pushAny(value:Dynamic):Void this.writeAny(nextName(), value);
-}
 
+	public function writePersistable(name:String, value:IPersistable):Void PersistOutputTools.writePersistableImpl(this, name, value);
+	public function writeScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeScopeImpl(this, name, body);
+	public function writeListScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeListScopeImpl(this, name, body);
+}

@@ -1,6 +1,7 @@
 package arp.persistable;
 
 import arp.persistable.impl.IObjectPersistOutput;
+import arp.persistable.lambda.PersistOutputTools;
 import haxe.io.Bytes;
 
 class ArrayPersistOutput implements IPersistOutput implements IObjectPersistOutput {
@@ -32,11 +33,6 @@ class ArrayPersistOutput implements IPersistOutput implements IObjectPersistOutp
 	}
 
 	public function writeNameList(name:String, value:Array<String>):Void this._data.push(([name, value]:Array<Dynamic>));
-	public function writePersistable(name:String, persistable:IPersistable):Void {
-		this.writeEnter(name);
-		persistable.writeSelf(this);
-		this.writeExit();
-	}
 
 	public function writeEnter(name:String):Void {
 		this.dataStack.push(this._data);
@@ -48,12 +44,6 @@ class ArrayPersistOutput implements IPersistOutput implements IObjectPersistOutp
 	public function writeExit():Void {
 		this._data = this.dataStack.pop();
 	}
-	public function writeScope(name:String, body:IPersistOutput->Void):Void {
-		this.writeEnter(name);
-		body(this);
-		this.writeExit();
-	}
-	public function writeListScope(name:String, body:IPersistOutput->Void):Void this.writeScope(name, body);
 
 	public function writeBool(name:String, value:Bool):Void this._data.push(([name, value]:Array<Dynamic>));
 	public function writeInt32(name:String, value:Int):Void this._data.push(([name, value]:Array<Dynamic>));
@@ -72,5 +62,8 @@ class ArrayPersistOutput implements IPersistOutput implements IObjectPersistOutp
 	public function pushUtf(value:String):Void this._data.push(value);
 	public function pushBlob(bytes:Bytes):Void this._data.push(bytes);
 	public function pushAny(value:Dynamic):Void this._data.push(value);
-}
 
+	public function writePersistable(name:String, value:IPersistable):Void PersistOutputTools.writePersistableImpl(this, name, value);
+	public function writeScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeScopeImpl(this, name, body);
+	public function writeListScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeListScopeImpl(this, name, body);
+}

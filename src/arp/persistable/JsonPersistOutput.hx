@@ -1,6 +1,7 @@
 package arp.persistable;
 
 import arp.persistable.impl.IObjectPersistOutput;
+import arp.persistable.lambda.PersistOutputTools;
 import haxe.crypto.Base64;
 import haxe.io.Bytes;
 import haxe.Json;
@@ -34,12 +35,6 @@ class JsonPersistOutput implements IPersistOutput {
 	public function writeBlob(name:String, bytes:Bytes):Void this.output.writeAny(name, Base64.encode(bytes));
 	public function pushBlob(bytes:Bytes):Void this.output.pushAny(Base64.encode(bytes));
 
-	public function writePersistable(name:String, persistable:IPersistable):Void {
-		this.writeEnter(name);
-		persistable.writeSelf(this);
-		this.writeExit();
-	}
-
 	public function writeEnter(name:String):Void {
 		var inner:Dynamic = {};
 		this.output.writeAny(name, inner);
@@ -60,16 +55,6 @@ class JsonPersistOutput implements IPersistOutput {
 			this.output = if (this.output == this.array) this.anon else this.array;
 		}
 	}
-	public function writeScope(name:String, body:IPersistOutput->Void):Void {
-		this.writeEnter(name);
-		body(this);
-		this.writeExit();
-	}
-	public function writeListScope(name:String, body:IPersistOutput->Void):Void {
-		this.writeEnter(name);
-		body(this);
-		this.writeExit();
-	}
 
 	public function writeNameList(name:String, value:Array<String>):Void this.output.writeNameList(name, value);
 
@@ -86,5 +71,8 @@ class JsonPersistOutput implements IPersistOutput {
 	public function pushDouble(value:Float):Void this.output.pushDouble(value);
 
 	public function pushUtf(value:String):Void this.output.pushUtf(value);
-}
 
+	public function writePersistable(name:String, value:IPersistable):Void PersistOutputTools.writePersistableImpl(this, name, value);
+	public function writeScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeScopeImpl(this, name, body);
+	public function writeListScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeListScopeImpl(this, name, body);
+}
