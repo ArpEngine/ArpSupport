@@ -26,6 +26,19 @@ class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutpu
 		this._persistLevel = persistLevel;
 	}
 
+	public function pushState(data:Dynamic):Void {
+		this.dataStack.push(this._data);
+		this.idStack.push(this.uniqId);
+		this._data = data;
+		this.uniqId = 0;
+	}
+
+	public function popState():Bool {
+		this._data = this.dataStack.pop();
+		this.uniqId = this.idStack.pop();
+		return this._data != null;
+	}
+
 	public function writeNameList(name:String, value:Array<String>):Void Reflect.setField(this._data, name, value);
 	public function writePersistable(name:String, persistable:IPersistable):Void {
 		this.writeEnter(name);

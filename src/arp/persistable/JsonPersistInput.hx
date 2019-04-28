@@ -9,15 +9,23 @@ class JsonPersistInput implements IPersistInput {
 
 	private var input:IObjectPersistInput;
 	private var anon:AnonPersistInput;
+	private var array:ArrayPersistInput;
 
 	private var _persistLevel:Int = 0;
 	public var persistLevel(get, never):Int;
 	inline private function get_persistLevel():Int return this._persistLevel;
 
 	public function new(json:String, persistLevel:Int = 0) {
-		var data = Json.parse(json);
-		this.anon = new AnonPersistInput(data, persistLevel);
-		this.input = anon;
+		var data:Dynamic = Json.parse(json);
+		this.anon = new AnonPersistInput(null, persistLevel);
+		this.array = new ArrayPersistInput(null, persistLevel);
+		if (Std.is(data, Array)) {
+			this.input = this.array;
+			this.array.pushState(data);
+		} else {
+			this.input = this.anon;
+			this.anon.pushState(data);
+		}
 		this._persistLevel = persistLevel;
 	}
 
@@ -31,11 +39,34 @@ class JsonPersistInput implements IPersistInput {
 		return persistable;
 	}
 
-	public function readEnter(name:String):Void this.input.readEnter(name);
-	public function readListEnter(name:String):Void this.input.readListEnter(name);
-	public function readExit():Void this.input.readExit();
-	public function readScope(name:String, body:IPersistInput->Void):Void this.input.readScope(name, body);
-	public function readListScope(name:String, body:IPersistInput->Void):Void this.input.readListScope(name, body);
+	public function readEnter(name:String):Void {
+		var inner:Dynamic = this.input.readAny(name);
+		if (this.input != this.anon) this.anon.pushState(null);
+		this.input = this.anon;
+		this.input.pushState(inner);
+	}
+	public function readListEnter(name:String):Void {
+		var inner:Array<Dynamic> = this.input.readAny(name);
+		if (this.input != this.array) this.array.pushState(null);
+		this.input = this.array;
+		this.input.pushState(inner);
+	}
+	public function readExit():Void {
+		if (!this.input.popState()) {
+			this.input.popState();
+			this.input = if (this.input == this.array) this.anon else this.array;
+		}
+	}
+	public function readScope(name:String, body:IPersistInput->Void):Void {
+		this.readEnter(name);
+		body(this);
+		this.readExit();
+	}
+	public function readListScope(name:String, body:IPersistInput->Void):Void {
+		this.readListEnter(name);
+		body(this);
+		this.readExit();
+	}
 
 	public function readNameList(name:String):Array<String> return this.input.readNameList(name);
 

@@ -21,6 +21,16 @@ class ArrayPersistOutput implements IPersistOutput implements IObjectPersistOutp
 		this._persistLevel = persistLevel;
 	}
 
+	public function pushState(data:Dynamic):Void {
+		this.dataStack.push(this._data);
+		this._data = data;
+	}
+
+	public function popState():Bool {
+		this._data = this.dataStack.pop();
+		return this._data != null;
+	}
+
 	public function writeNameList(name:String, value:Array<String>):Void this._data.push(([name, value]:Array<Dynamic>));
 	public function writePersistable(name:String, persistable:IPersistable):Void {
 		this.writeEnter(name);

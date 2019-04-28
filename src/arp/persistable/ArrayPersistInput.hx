@@ -22,6 +22,19 @@ class ArrayPersistInput implements IPersistInput implements IObjectPersistInput 
 		this._persistLevel = persistLevel;
 	}
 
+	public function pushState(data:Dynamic):Void {
+		this.dataStack.push(this._data);
+		this.indexStack.push(this.index);
+		this._data = data;
+		this.index = 0;
+	}
+
+	public function popState():Bool {
+		this._data = this.dataStack.pop();
+		this.index = this.indexStack.pop();
+		return this._data != null;
+	}
+
 	public function readNameList(name:String):Array<String> {
 		return this._data[this.index++][1];
 	}

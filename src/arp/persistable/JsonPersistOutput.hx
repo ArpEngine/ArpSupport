@@ -9,6 +9,7 @@ class JsonPersistOutput implements IPersistOutput {
 
 	private var output:IObjectPersistOutput;
 	private var anon:AnonPersistOutput;
+	private var array:ArrayPersistOutput;
 
 	private var _persistLevel:Int = 0;
 	public var persistLevel(get, never):Int;
@@ -19,7 +20,14 @@ class JsonPersistOutput implements IPersistOutput {
 
 	public function new(persistLevel:Int = 0) {
 		this.anon = new AnonPersistOutput(null, persistLevel);
-		this.output = anon;
+		this.array = new ArrayPersistOutput(null, persistLevel);
+		if (false) {
+			this.output = this.array;
+			this.array.pushState([]);
+		} else {
+			this.output = this.anon;
+			this.anon.pushState({});
+		}
 		this._persistLevel = persistLevel;
 	}
 
@@ -32,11 +40,36 @@ class JsonPersistOutput implements IPersistOutput {
 		this.writeExit();
 	}
 
-	public function writeEnter(name:String):Void this.output.writeEnter(name);
-	public function writeListEnter(name:String):Void this.output.writeListEnter(name);
-	public function writeExit():Void this.output.writeExit();
-	public function writeScope(name:String, body:IPersistOutput->Void):Void this.output.writeScope(name, body);
-	public function writeListScope(name:String, body:IPersistOutput->Void):Void this.output.writeListScope(name, body);
+	public function writeEnter(name:String):Void {
+		var inner:Dynamic = {};
+		this.output.writeAny(name, inner);
+		if (this.output != this.anon) this.anon.pushState(null);
+		this.output = this.anon;
+		this.output.pushState(inner);
+	}
+	public function writeListEnter(name:String):Void {
+		var inner:Array<Dynamic> = [];
+		this.output.writeAny(name, inner);
+		if (this.output != this.array) this.array.pushState(null);
+		this.output = this.array;
+		this.output.pushState(inner);
+	}
+	public function writeExit():Void {
+		if (!this.output.popState()) {
+			this.output.popState();
+			this.output = if (this.output == this.array) this.anon else this.array;
+		}
+	}
+	public function writeScope(name:String, body:IPersistOutput->Void):Void {
+		this.writeEnter(name);
+		body(this);
+		this.writeExit();
+	}
+	public function writeListScope(name:String, body:IPersistOutput->Void):Void {
+		this.writeEnter(name);
+		body(this);
+		this.writeExit();
+	}
 
 	public function writeNameList(name:String, value:Array<String>):Void this.output.writeNameList(name, value);
 

@@ -24,6 +24,19 @@ class AnonPersistInput implements IPersistInput implements IObjectPersistInput {
 		this._persistLevel = persistLevel;
 	}
 
+	public function pushState(data:Dynamic):Void {
+		this.dataStack.push(this._data);
+		this.idStack.push(this.uniqId);
+		this._data = data;
+		this.uniqId = 0;
+	}
+
+	public function popState():Bool {
+		this._data = this.dataStack.pop();
+		this.uniqId = this.idStack.pop();
+		return this._data != null;
+	}
+
 	public function readNameList(name:String):Array<String> return Reflect.field(this._data, name);
 	public function readPersistable<T:IPersistable>(name:String, persistable:T):T {
 		this.readEnter(name);
