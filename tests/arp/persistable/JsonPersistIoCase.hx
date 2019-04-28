@@ -72,7 +72,7 @@ class JsonPersistIoCase {
 		assertMatch("value", name);
 	}
 
-	public function testAnonIntoArray():Void {
+	public function testArrayIntoAnon():Void {
 		var output:JsonPersistOutput = new JsonPersistOutput();
 		output.writeListEnter("obj");
 		output.pushUtf("value");
@@ -80,7 +80,7 @@ class JsonPersistIoCase {
 		assertMatch({ obj: ["value"] }, haxe.format.JsonParser.parse(output.json));
 	}
 
-	public function testAnonFromArray():Void {
+	public function testArrayFromAnon():Void {
 		var input:JsonPersistInput = new JsonPersistInput(haxe.format.JsonPrinter.print({ obj: ["value"] }));
 		input.readListEnter("obj");
 		var name = input.nextUtf();
@@ -88,7 +88,7 @@ class JsonPersistIoCase {
 		assertMatch("value", name);
 	}
 
-	public function testArrayIntoAnon():Void {
+	public function testAnonIntoArray():Void {
 		var output:JsonPersistOutput = new JsonPersistOutput();
 		output.writeListEnter("array");
 		output.writeEnter("obj");
@@ -98,7 +98,7 @@ class JsonPersistIoCase {
 		assertMatch(untyped { array: [["obj", {name: "value"} ]] }, haxe.format.JsonParser.parse(output.json));
 	}
 
-	public function testArrayFromAnon():Void {
+	public function testAnonFromArray():Void {
 		var input:JsonPersistInput = new JsonPersistInput(haxe.format.JsonPrinter.print(untyped { array: [["obj", {name: "value"} ]] }));
 		input.readListEnter("array");
 		input.readEnter("obj");
@@ -121,6 +121,77 @@ class JsonPersistIoCase {
 		var input:JsonPersistInput = new JsonPersistInput(haxe.format.JsonPrinter.print(untyped { array: [["a", ["value"]]] }));
 		input.readListEnter("array");
 		input.readListEnter("a");
+		var name = input.nextUtf();
+		input.readExit();
+		input.readExit();
+		assertMatch("value", name);
+	}
+
+	public function testIndexAnonIntoAnon():Void {
+		var output:JsonPersistOutput = new JsonPersistOutput();
+		output.pushEnter();
+		output.writeUtf("name", "value");
+		output.writeExit();
+		assertMatch({ "$0": { name: "value" } }, haxe.format.JsonParser.parse(output.json));
+	}
+
+	public function testIndexAnonFromAnon():Void {
+		var input:JsonPersistInput = new JsonPersistInput(haxe.format.JsonPrinter.print({ "$0": { name: "value" } }));
+		input.nextEnter();
+		var name = input.readUtf("name");
+		input.readExit();
+		assertMatch("value", name);
+	}
+
+	public function testIndexArrayIntoAnon():Void {
+		var output:JsonPersistOutput = new JsonPersistOutput();
+		output.pushListEnter();
+		output.pushUtf("value");
+		output.writeExit();
+		assertMatch({ "$0": ["value"] }, haxe.format.JsonParser.parse(output.json));
+	}
+
+	public function testIndexArrayFromAnon():Void {
+		var input:JsonPersistInput = new JsonPersistInput(haxe.format.JsonPrinter.print({ "$0": ["value"] }));
+		input.nextListEnter();
+		var name = input.nextUtf();
+		input.readExit();
+		assertMatch("value", name);
+	}
+
+	public function testIndexAnonIntoArray():Void {
+		var output:JsonPersistOutput = new JsonPersistOutput();
+		output.pushListEnter();
+		output.pushEnter();
+		output.writeUtf("name", "value");
+		output.writeExit();
+		output.writeExit();
+		assertMatch(untyped { "$0": [ { name: "value" } ] }, haxe.format.JsonParser.parse(output.json));
+	}
+
+	public function testIndexAnonFromArray():Void {
+		var input:JsonPersistInput = new JsonPersistInput(haxe.format.JsonPrinter.print(untyped { "$0": [ {name: "value"} ] }));
+		input.nextListEnter();
+		input.nextEnter();
+		var name = input.readUtf("name");
+		input.readExit();
+		input.readExit();
+		assertMatch("value", name);
+	}
+
+	public function testIndexArrayIntoArray():Void {
+		var output:JsonPersistOutput = new JsonPersistOutput();
+		output.pushListEnter();
+		output.pushListEnter();
+		output.pushUtf("value");
+		output.writeExit();
+		assertMatch(untyped { "$0": [["value"]] }, haxe.format.JsonParser.parse(output.json));
+	}
+
+	public function testIndexArrayFromArray():Void {
+		var input:JsonPersistInput = new JsonPersistInput(haxe.format.JsonPrinter.print(untyped { "$0": [["value"]] }));
+		input.nextListEnter();
+		input.nextListEnter();
 		var name = input.nextUtf();
 		input.readExit();
 		input.readExit();

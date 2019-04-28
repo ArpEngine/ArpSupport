@@ -40,10 +40,10 @@ class ArrayPersistInput implements IPersistInput implements IObjectPersistInput 
 		return this._data[this.index++][1];
 	}
 
-	public function readEnter(name:String):Void {
-		this.pushState(this.readAny(name));
-	}
+	public function readEnter(name:String):Void this.pushState(this.readAny(name));
 	public function readListEnter(name:String):Void this.readEnter(name);
+	public function nextEnter():Void this.pushState(this.nextAny());
+	public function nextListEnter():Void this.nextEnter();
 	public function readExit():Void this.popState();
 
 	public function readBool(name:String):Bool return this._data[this.index++][1];

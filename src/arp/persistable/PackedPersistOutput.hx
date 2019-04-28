@@ -27,6 +27,8 @@ class PackedPersistOutput implements IPersistOutput {
 
 	public function writeEnter(name:String):Void return;
 	public function writeListEnter(name:String):Void this.writeEnter(name);
+	public function pushEnter():Void return;
+	public function pushListEnter():Void this.pushEnter();
 	public function writeExit():Void return;
 
 	public function writeBool(name:String, value:Bool):Void this._output.writeBool(value);

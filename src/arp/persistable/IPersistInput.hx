@@ -8,6 +8,8 @@ interface IPersistInput {
 
 	function readEnter(name:String):Void;
 	function readListEnter(name:String):Void;
+	function nextEnter():Void;
+	function nextListEnter():Void;
 	function readExit():Void;
 
 	function readNameList(name:String):Array<String>;

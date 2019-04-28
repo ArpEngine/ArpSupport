@@ -49,6 +49,20 @@ class JsonPersistOutput implements IPersistOutput {
 		this.output = this.array;
 		this.output.pushState(inner);
 	}
+	public function pushEnter():Void {
+		var inner:Dynamic = {};
+		this.output.pushAny(inner);
+		if (this.output != this.anon) this.anon.pushState(null);
+		this.output = this.anon;
+		this.output.pushState(inner);
+	}
+	public function pushListEnter():Void {
+		var inner:Array<Dynamic> = [];
+		this.output.pushAny(inner);
+		if (this.output != this.array) this.array.pushState(null);
+		this.output = this.array;
+		this.output.pushState(inner);
+	}
 	public function writeExit():Void {
 		if (!this.output.popState()) {
 			this.output.popState();

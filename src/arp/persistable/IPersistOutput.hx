@@ -8,6 +8,8 @@ interface IPersistOutput {
 
 	function writeEnter(name:String):Void;
 	function writeListEnter(name:String):Void;
+	function pushEnter():Void;
+	function pushListEnter():Void;
 	function writeExit():Void;
 
 	function writeNameList(name:String, value:Array<String>):Void;

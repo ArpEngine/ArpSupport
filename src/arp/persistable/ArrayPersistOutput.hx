@@ -40,6 +40,12 @@ class ArrayPersistOutput implements IPersistOutput implements IObjectPersistOutp
 		this.pushState(data);
 	}
 	public function writeListEnter(name:String):Void this.writeEnter(name);
+	public function pushEnter():Void {
+		var data:Array<Dynamic> = [];
+		this.pushAny(data);
+		this.pushState(data);
+	}
+	public function pushListEnter():Void this.pushEnter();
 	public function writeExit():Void this.popState();
 
 	public function writeBool(name:String, value:Bool):Void this._data.push(([name, value]:Array<Dynamic>));

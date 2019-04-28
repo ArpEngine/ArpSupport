@@ -45,6 +45,18 @@ class JsonPersistInput implements IPersistInput {
 		this.input = this.array;
 		this.input.pushState(inner);
 	}
+	public function nextEnter():Void {
+		var inner:Dynamic = this.input.nextAny();
+		if (this.input != this.anon) this.anon.pushState(null);
+		this.input = this.anon;
+		this.input.pushState(inner);
+	}
+	public function nextListEnter():Void {
+		var inner:Array<Dynamic> = this.input.nextAny();
+		if (this.input != this.array) this.array.pushState(null);
+		this.input = this.array;
+		this.input.pushState(inner);
+	}
 	public function readExit():Void {
 		if (!this.input.popState()) {
 			this.input.popState();
@@ -67,7 +79,6 @@ class JsonPersistInput implements IPersistInput {
 	public function nextDouble():Float return this.input.nextDouble();
 
 	public function nextUtf():String return this.input.nextUtf();
-
 
 	public function readPersistable<T:IPersistable>(name:String, persistable:T):T return PersistInputTools.readPersistableImpl(this, name, persistable);
 	public function readScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readScopeImpl(this, name, body);
