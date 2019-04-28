@@ -21,6 +21,8 @@ class MockPersistable implements IPersistable {
 	private var pushField2:Float;
 	private var pushField3:String;
 	private var pushField4:Bytes;
+	private var arrayField0:String;
+	private var arrayField1:String;
 
 	public function new(hasChild:Bool = false) {
 		this.nameListField = ["a", "b", "c"];
@@ -38,6 +40,8 @@ class MockPersistable implements IPersistable {
 		this.pushField2 = hasChild ? 100.1 : 200.2;
 		this.pushField3 = hasChild ? "111" : "222";
 		this.pushField4 = Bytes.ofString(hasChild ? "64" : "8");
+		this.arrayField0 = "a0";
+		this.arrayField1 = "a1";
 	}
 
 	public function readSelf(input:IPersistInput):Void {
@@ -55,6 +59,10 @@ class MockPersistable implements IPersistable {
 		this.pushField2 = input.nextDouble();
 		this.pushField3 = input.nextUtf();
 		this.pushField4 = input.nextBlob();
+		input.readListEnter("array");
+		this.arrayField0 = input.nextUtf();
+		this.arrayField1 = input.nextUtf();
+		input.readExit();
 	}
 
 	public function writeSelf(output:IPersistOutput):Void {
@@ -72,6 +80,10 @@ class MockPersistable implements IPersistable {
 		output.pushDouble(this.pushField2);
 		output.pushUtf(this.pushField3);
 		output.pushBlob(this.pushField4);
+		output.writeListEnter("array");
+		output.pushUtf(this.arrayField0);
+		output.pushUtf(this.arrayField1);
+		output.writeExit();
 	}
 
 	public function toString():String {
@@ -90,6 +102,8 @@ class MockPersistable implements IPersistable {
 			this.pushField2,
 			this.pushField3,
 			this.pushField4,
+			this.arrayField0,
+			this.arrayField1,
 			"]"].join(" ");
 	}
 }

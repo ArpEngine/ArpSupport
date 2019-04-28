@@ -33,13 +33,15 @@ class AnonPersistIoCase {
 				"booleanValue": false,
 				"utfValue": "utf",
 				"$0": true,
-				"$2": 200.2
+				"$2": 200.2,
+				"array": { "$0": "a0", "$1": "a1" }
 			},
 			"$3": "111",
 			"blobValue": Bytes.alloc(64),
 			"$4": Bytes.ofString("64"),
 			"utfValue": "utf",
-			"$2": 100.1
+			"$2": 100.1,
+			"array": { "$0": "a0", "$1": "a1" }
 		}
 	};
 

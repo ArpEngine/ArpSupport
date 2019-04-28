@@ -27,13 +27,15 @@ class ArrayPersistIoCase {
 					200,
 					200.2,
 					"222",
-					Bytes.ofString("8")
+					Bytes.ofString("8"),
+					["array", ["a0", "a1"]]
 				]],
 				false,
 				100,
 				100.1,
 				"111",
-				Bytes.ofString("64")
+				Bytes.ofString("64"),
+				["array", ["a0", "a1"]]
 			]
 		]
 	]
