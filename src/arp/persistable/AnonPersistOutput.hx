@@ -40,8 +40,6 @@ class AnonPersistOutput implements IPersistOutput implements IObjectPersistOutpu
 		return this._data != null;
 	}
 
-	public function writeNameList(name:String, value:Array<String>):Void Reflect.setField(this._data, name, value);
-
 	public function writeEnter(name:String):Void {
 		var data = {};
 		this.writeAny(name, data);

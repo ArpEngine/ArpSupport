@@ -12,8 +12,6 @@ interface IPersistOutput {
 	function pushListEnter():Void;
 	function writeExit():Void;
 
-	function writeNameList(name:String, value:Array<String>):Void;
-
 	function writeBool(name:String, value:Bool):Void;
 	function writeInt32(name:String, value:Int):Void;
 	function writeUInt32(name:String, value:UInt):Void;

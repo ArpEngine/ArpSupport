@@ -12,8 +12,6 @@ interface IPersistInput {
 	function nextListEnter():Void;
 	function readExit():Void;
 
-	function readNameList(name:String):Array<String>;
-
 	function readBool(name:String):Bool;
 	function readInt32(name:String):Int;
 	function readUInt32(name:String):UInt;

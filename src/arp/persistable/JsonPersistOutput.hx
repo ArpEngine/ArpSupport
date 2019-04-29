@@ -70,8 +70,6 @@ class JsonPersistOutput implements IPersistOutput {
 		}
 	}
 
-	public function writeNameList(name:String, value:Array<String>):Void this.output.writeNameList(name, value);
-
 	public function writeBool(name:String, value:Bool):Void this.output.writeBool(name, value);
 	public function writeInt32(name:String, value:Int):Void this.output.writeInt32(name, value);
 	public function writeUInt32(name:String, value:UInt):Void this.output.writeUInt32(name, value);

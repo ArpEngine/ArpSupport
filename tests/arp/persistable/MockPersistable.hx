@@ -8,7 +8,6 @@ import arp.persistable.IPersistable;
 
 class MockPersistable implements IPersistable {
 
-	private var nameListField:Array<String>;
 	private var boolField:Bool;
 	private var intField:Int;
 	private var doubleField:Float;
@@ -25,7 +24,6 @@ class MockPersistable implements IPersistable {
 	private var arrayField1:String;
 
 	public function new(hasChild:Bool = false) {
-		this.nameListField = ["a", "b", "c"];
 		this.boolField = hasChild;
 		this.intField = hasChild ? 2 : 1;
 		this.doubleField = 0.5;
@@ -45,7 +43,6 @@ class MockPersistable implements IPersistable {
 	}
 
 	public function readSelf(input:IPersistInput):Void {
-		this.nameListField = input.readNameList("nameListValue");
 		this.boolField = input.readBool("booleanValue");
 		this.intField = input.readInt32("intValue");
 		this.doubleField = input.readDouble("doubleValue");
@@ -66,7 +63,6 @@ class MockPersistable implements IPersistable {
 	}
 
 	public function writeSelf(output:IPersistOutput):Void {
-		output.writeNameList("nameListValue", this.nameListField);
 		output.writeBool("booleanValue", this.boolField);
 		output.writeInt32("intValue", this.intField);
 		output.writeDouble("doubleValue", this.doubleField);
@@ -89,7 +85,6 @@ class MockPersistable implements IPersistable {
 	public function toString():String {
 		return untyped [
 			"[TestPersistable",
-			this.nameListField,
 			this.boolField,
 			this.intField,
 			this.doubleField,

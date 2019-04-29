@@ -14,17 +14,7 @@ class JsonPersistIoCase {
 			"intValue": 2,
 			"booleanValue": true,
 			"$0": false,
-			"nameListValue": [
-				"a",
-				"b",
-				"c"
-			],
 			"childValue": {
-				"nameListValue": [
-					"a",
-					"b",
-					"c"
-				],
 				"doubleValue": 0.5,
 				"$1": 200,
 				"$3": "222",

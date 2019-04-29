@@ -4,13 +4,6 @@ import haxe.io.Bytes;
 
 class PersistableTool {
 
-	public static function readNullableNameList(me:IPersistInput, name:String):Null<Array<String>> {
-		me.readEnter(name);
-		var value = if (me.readBool("hasValue")) me.readNameList("value") else null;
-		me.readExit();
-		return value;
-	}
-
 	public static function readNullableBool(me:IPersistInput, name:String):Null<Bool> {
 		me.readEnter(name);
 		var value = if (me.readBool("hasValue")) me.readBool("value") else null;
@@ -51,13 +44,6 @@ class PersistableTool {
 		var value = if (me.readBool("hasValue")) me.readBlob("value") else null;
 		me.readExit();
 		return value;
-	}
-
-	public static function writeNullableNameList(me:IPersistOutput, name:String, value:Null<Array<String>>):Void {
-		me.writeEnter(name);
-		me.writeBool("hasValue", value != null);
-		if (value != null) me.writeNameList("value", value);
-		me.writeExit();
 	}
 
 	public static function writeNullableBool(me:IPersistOutput, name:String, value:Null<Bool>):Void {

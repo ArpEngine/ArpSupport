@@ -25,20 +25,26 @@ class PersistableIntOmapTool {
 
 	inline public static function readIntOmap(omap:IOmap<String, Int>, input:IPersistInput):Void {
 		omap.clear();
-		var nameList:Array<String> = input.readNameList("names");
-		input.readEnter("values");
-		for (name in nameList) {
+		var c:Int = input.readInt32("c");
+		input.readListEnter("omap");
+		for (i in 0...c) {
+			input.nextEnter();
+			var name:String = input.readUtf("name");
 			omap.addPair(name, input.readInt32(name));
+			input.readExit();
 		}
 		input.readExit();
 	}
 
 	inline public static function writeIntOmap(omap:IOmap<String, Int>, output:IPersistOutput):Void {
 		var nameList:Array<String> = [for (name in omap.keys()) name];
-		output.writeNameList("names", nameList);
-		output.writeEnter("values");
+		output.writeInt32("c", nameList.length);
+		output.writeListEnter("omap");
 		for (name in nameList) {
-			output.writeInt32(name, omap.get(name));
+			output.pushEnter();
+			output.writeUtf("name", name);
+			output.writeInt32("value", omap.get(name));
+			output.writeExit();
 		}
 		output.writeExit();
 	}

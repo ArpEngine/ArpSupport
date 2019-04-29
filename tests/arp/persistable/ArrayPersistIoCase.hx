@@ -10,14 +10,12 @@ class ArrayPersistIoCase {
 		[
 			"obj",
 			[
-				["nameListValue", ["a", "b", "c"]],
 				["booleanValue", true],
 				["intValue", 2],
 				["doubleValue", 0.5],
 				["utfValue", "utf"],
 				["blobValue", Bytes.alloc(64)],
 				["childValue", [
-					["nameListValue", ["a", "b", "c"]],
 					["booleanValue", false],
 					["intValue", 1],
 					["doubleValue", 0.5],

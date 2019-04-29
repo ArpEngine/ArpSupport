@@ -32,8 +32,6 @@ class ArrayPersistOutput implements IPersistOutput implements IObjectPersistOutp
 		return this._data != null;
 	}
 
-	public function writeNameList(name:String, value:Array<String>):Void this._data.push(([name, value]:Array<Dynamic>));
-
 	public function writeEnter(name:String):Void {
 		var data:Array<Dynamic> = [];
 		this.writeAny(name, data);

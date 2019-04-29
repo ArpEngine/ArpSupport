@@ -64,8 +64,6 @@ class JsonPersistInput implements IPersistInput {
 		}
 	}
 
-	public function readNameList(name:String):Array<String> return this.input.readNameList(name);
-
 	public function readBool(name:String):Bool return this.input.readBool(name);
 	public function readInt32(name:String):Int return this.input.readInt32(name);
 	public function readUInt32(name:String):UInt return this.input.readUInt32(name);
