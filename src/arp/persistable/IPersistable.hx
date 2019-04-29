@@ -7,5 +7,3 @@ interface IPersistable {
 	function readSelf(input:IPersistInput):Void;
 	function writeSelf(output:IPersistOutput):Void;
 }
-
-

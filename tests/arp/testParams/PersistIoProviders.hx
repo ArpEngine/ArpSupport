@@ -11,6 +11,8 @@ import arp.persistable.PackedPersistOutput;
 import haxe.io.BytesOutput;
 import arp.persistable.AnonPersistInput;
 import arp.persistable.AnonPersistOutput;
+import arp.persistable.ArrayPersistInput;
+import arp.persistable.ArrayPersistOutput;
 import arp.persistable.IPersistOutput;
 import arp.persistable.IPersistInput;
 
@@ -19,6 +21,7 @@ class PersistIoProviders {
 	public static function persistIoProvider():Iterable<Array<Dynamic>> {
 		var providers:Array<Array<Dynamic>> = [];
 		providers.push([new AnonPersistIoProvider()]);
+		providers.push([new ArrayPersistIoProvider()]);
 		providers.push([new JsonPersistIoProvider()]);
 		providers.push([new PackedPersistIoProvider()]);
 		return providers;
@@ -40,6 +43,23 @@ class AnonPersistIoProvider {
 		this.data = { };
 		this._output = new AnonPersistOutput(data);
 		this._input = new AnonPersistInput(data);
+	}
+
+	public var output(get, never):IPersistOutput;
+	public var input(get, never):IPersistInput;
+	private function get_output():IPersistOutput return _output;
+	private function get_input():IPersistInput return _input;
+}
+
+class ArrayPersistIoProvider {
+	public var data:Array<Dynamic>;
+	private var _output:ArrayPersistOutput;
+	private var _input:ArrayPersistInput;
+
+	public function new() {
+		this.data = [];
+		this._output = new ArrayPersistOutput(data);
+		this._input = new ArrayPersistInput(data);
 	}
 
 	public var output(get, never):IPersistOutput;

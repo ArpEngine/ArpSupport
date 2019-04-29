@@ -25,21 +25,29 @@ class PersistableStringOmapTool {
 
 	inline public static function readStringOmap(omap:IOmap<String, String>, input:IPersistInput):Void {
 		omap.clear();
-		var nameList:Array<String> = input.readNameList("names");
-		var values:IPersistInput = input.readEnter("values");
-		for (name in nameList) {
-			omap.addPair(name, values.readUtf(name));
+		var c:Int = input.readInt32("c");
+		input.readListEnter("omap");
+		for (i in 0...c) {
+			input.nextEnter();
+			var name:String = input.readUtf("name");
+			omap.addPair(name, input.readUtf(name));
+			input.readExit();
 		}
-		values.readExit();
+		input.readExit();
+
 	}
 
 	inline public static function writeStringOmap(omap:IOmap<String, String>, output:IPersistOutput):Void {
 		var nameList:Array<String> = [for (name in omap.keys()) name];
-		output.writeNameList("names", nameList);
-		var values:IPersistOutput = output.writeEnter("values");
+		output.writeInt32("c", nameList.length);
+		output.writeListEnter("omap");
 		for (name in nameList) {
-			values.writeUtf(name, omap.get(name));
+			output.pushEnter();
+			output.writeUtf("name", name);
+			output.writeUtf("value", omap.get(name));
+			output.writeExit();
 		}
-		values.writeExit();
+		output.writeExit();
+
 	}
 }
