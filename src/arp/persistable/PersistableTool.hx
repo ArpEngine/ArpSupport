@@ -46,6 +46,48 @@ class PersistableTool {
 		return value;
 	}
 
+	public static function nextNullableBool(me:IPersistInput):Null<Bool> {
+		me.nextEnter();
+		var value = if (me.readBool("hasValue")) me.readBool("value") else null;
+		me.readExit();
+		return value;
+	}
+
+	public static function nextNullableInt32(me:IPersistInput):Null<Int> {
+		me.nextEnter();
+		var value = if (me.readBool("hasValue")) me.readInt32("value") else null;
+		me.readExit();
+		return value;
+	}
+
+	public static function nextNullableUInt32(me:IPersistInput):Null<UInt> {
+		me.nextEnter();
+		var value = if (me.readBool("hasValue")) me.readUInt32("value") else null;
+		me.readExit();
+		return value;
+	}
+
+	public static function nextNullableDouble(me:IPersistInput):Null<Float> {
+		me.nextEnter();
+		var value = if (me.readBool("hasValue")) me.readDouble("value") else null;
+		me.readExit();
+		return value;
+	}
+
+	public static function nextNullableUtf(me:IPersistInput):Null<String> {
+		me.nextEnter();
+		var value = if (me.readBool("hasValue")) me.readUtf("value") else null;
+		me.readExit();
+		return value;
+	}
+
+	public static function nextNullableBlob(me:IPersistInput):Null<Bytes> {
+		me.nextEnter();
+		var value = if (me.readBool("hasValue")) me.readBlob("value") else null;
+		me.readExit();
+		return value;
+	}
+
 	public static function writeNullableBool(me:IPersistOutput, name:String, value:Null<Bool>):Void {
 		me.writeEnter(name);
 		me.writeBool("hasValue", value != null);
@@ -83,6 +125,48 @@ class PersistableTool {
 
 	public static function writeNullableBlob(me:IPersistOutput, name:String, bytes:Null<Bytes>):Void {
 		me.writeEnter(name);
+		me.writeBool("hasValue", bytes != null);
+		if (bytes != null) me.writeBlob("value", bytes);
+		me.writeExit();
+	}
+
+	public static function pushNullableBool(me:IPersistOutput, value:Null<Bool>):Void {
+		me.pushEnter();
+		me.writeBool("hasValue", value != null);
+		if (value != null) me.writeBool("value", value);
+		me.writeExit();
+	}
+
+	public static function pushNullableInt32(me:IPersistOutput, value:Null<Int>):Void {
+		me.pushEnter();
+		me.writeBool("hasValue", value != null);
+		if (value != null) me.writeInt32("value", value);
+		me.writeExit();
+	}
+
+	public static function pushNullableUInt32(me:IPersistOutput, value:Null<Int>):Void {
+		me.pushEnter();
+		me.writeBool("hasValue", value != null);
+		if (value != null) me.writeUInt32("value", value);
+		me.writeExit();
+	}
+
+	public static function pushNullableDouble(me:IPersistOutput, value:Null<Float>):Void {
+		me.pushEnter();
+		me.writeBool("hasValue", value != null);
+		if (value != null) me.writeDouble("value", value);
+		me.writeExit();
+	}
+
+	public static function pushNullableUtf(me:IPersistOutput, value:Null<String>):Void {
+		me.pushEnter();
+		me.writeBool("hasValue", value != null);
+		if (value != null) me.writeUtf("value", value);
+		me.writeExit();
+	}
+
+	public static function pushNullableBlob(me:IPersistOutput, bytes:Null<Bytes>):Void {
+		me.pushEnter();
 		me.writeBool("hasValue", bytes != null);
 		if (bytes != null) me.writeBlob("value", bytes);
 		me.writeExit();
