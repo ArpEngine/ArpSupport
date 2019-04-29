@@ -8,6 +8,12 @@ class PersistOutputTools {
 		me.writeExit();
 	}
 
+	inline public static function pushPersistableImpl(me:IPersistOutput, value:IPersistable):Void {
+		me.pushEnter();
+		value.writeSelf(me);
+		me.writeExit();
+	}
+
 	inline public static function writeScopeImpl(me:IPersistOutput, name:String, body:IPersistOutput->Void):Void {
 		me.writeEnter(name);
 		body(me);

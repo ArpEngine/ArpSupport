@@ -9,6 +9,13 @@ class PersistInputTools {
 		return persistable;
 	}
 
+	inline public static function nextPersistableImpl<T:IPersistable>(me:IPersistInput, value:T):T {
+		me.nextEnter();
+		value.readSelf(me);
+		me.readExit();
+		return value;
+	}
+
 	inline public static function readScopeImpl(me:IPersistInput, name:String, body:IPersistInput->Void):Void {
 		me.readEnter(name);
 		body(me);

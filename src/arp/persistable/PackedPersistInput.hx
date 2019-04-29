@@ -40,6 +40,7 @@ class PackedPersistInput implements IPersistInput {
 	public function nextBlob():Bytes return this.readBlob(null);
 
 	public function readPersistable<T:IPersistable>(name:String, persistable:T):T return PersistInputTools.readPersistableImpl(this, name, persistable);
+	public function nextPersistable<T:IPersistable>(value:T):T return PersistInputTools.nextPersistableImpl(this, value);
 	public function readScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readScopeImpl(this, name, body);
 	public function readListScope(name:String, body:IPersistInput->Void):Void PersistInputTools.readListScopeImpl(this, name, body);
 }

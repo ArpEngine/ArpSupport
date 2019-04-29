@@ -29,6 +29,7 @@ interface IPersistOutput {
 	function pushBlob(bytes:Bytes):Void;
 
 	function writePersistable(name:String, value:IPersistable):Void;
+	function pushPersistable(value:IPersistable):Void;
 	function writeScope(name:String, body:IPersistOutput->Void):Void;
 	function writeListScope(name:String, body:IPersistOutput->Void):Void;
 }

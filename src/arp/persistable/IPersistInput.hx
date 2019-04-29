@@ -29,6 +29,7 @@ interface IPersistInput {
 	function nextBlob():Bytes;
 
 	function readPersistable<T:IPersistable>(name:String, persistable:T):T;
+	function nextPersistable<T:IPersistable>(persistable:T):T;
 	function readScope(name:String, body:IPersistInput->Void):Void;
 	function readListScope(name:String, body:IPersistInput->Void):Void;
 }

@@ -43,6 +43,7 @@ class PackedPersistOutput implements IPersistOutput {
 	public function pushBlob(value:Bytes):Void this.writeBlob(null, value);
 
 	public function writePersistable(name:String, value:IPersistable):Void PersistOutputTools.writePersistableImpl(this, name, value);
+	public function pushPersistable(value:IPersistable):Void PersistOutputTools.pushPersistableImpl(this, value);
 	public function writeScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeScopeImpl(this, name, body);
 	public function writeListScope(name:String, body:IPersistOutput->Void):Void PersistOutputTools.writeListScopeImpl(this, name, body);
 }
