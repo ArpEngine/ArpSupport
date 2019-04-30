@@ -1,20 +1,22 @@
 package arp.testParams;
 
-import arp.persistable.JsonPersistInput;
-import arp.persistable.JsonPersistOutput;
-import haxe.io.Bytes;
-import arp.io.OutputWrapper;
-import haxe.io.BytesInput;
 import arp.io.InputWrapper;
-import arp.persistable.PackedPersistInput;
-import arp.persistable.PackedPersistOutput;
-import haxe.io.BytesOutput;
+import arp.io.OutputWrapper;
 import arp.persistable.AnonPersistInput;
 import arp.persistable.AnonPersistOutput;
 import arp.persistable.ArrayPersistInput;
 import arp.persistable.ArrayPersistOutput;
-import arp.persistable.IPersistOutput;
 import arp.persistable.IPersistInput;
+import arp.persistable.IPersistOutput;
+import arp.persistable.JsonPersistInput;
+import arp.persistable.JsonPersistOutput;
+import arp.persistable.PackedPersistInput;
+import arp.persistable.PackedPersistOutput;
+import arp.persistable.VerbosePersistInput;
+import arp.persistable.VerbosePersistOutput;
+import haxe.io.Bytes;
+import haxe.io.BytesInput;
+import haxe.io.BytesOutput;
 
 class PersistIoProviders {
 
@@ -24,6 +26,7 @@ class PersistIoProviders {
 		providers.push([new ArrayPersistIoProvider()]);
 		providers.push([new JsonPersistIoProvider()]);
 		providers.push([new PackedPersistIoProvider()]);
+		providers.push([new VerbosePersistIoProvider()]);
 		return providers;
 	}
 
@@ -105,4 +108,20 @@ class PackedPersistIoProvider {
 
 	public var bytes(get, never):Bytes;
 	private function get_bytes():Bytes return this.bytesOutput.getBytes();
+}
+
+class VerbosePersistIoProvider {
+	private var _output:VerbosePersistOutput;
+	private var _input:VerbosePersistInput;
+
+	public function new() {
+		this._output = new VerbosePersistOutput();
+	}
+	public var output(get, never):IPersistOutput;
+	public var input(get, never):IPersistInput;
+	private function get_output():IPersistOutput return _output;
+	private function get_input():IPersistInput {
+		if (this._input != null) return this._input;
+		return this._input = new VerbosePersistInput(this._output.data);
+	}
 }
