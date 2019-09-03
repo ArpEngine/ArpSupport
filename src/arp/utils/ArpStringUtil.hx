@@ -6,6 +6,10 @@ class ArpStringUtil {
 		return if (value != null) _isNumeric.match(value) else false;
 	}
 
+	inline public static function isGeneratedId(value:String):Bool {
+		return if (value != null) value.charAt(0) == "$" else false;
+	}
+
 	public static function parseHex(str:String):Int {
 		var value:Int = 0;
 		for (i in 0...str.length) {
