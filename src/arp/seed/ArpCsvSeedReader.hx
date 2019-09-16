@@ -13,7 +13,7 @@ class ArpCsvSeedReader extends ArpTableSeedReader {
 	inline public function parseCsvString(csvString:String, lexicalType:String = null, env:ArpSeedEnv = null):ArpSeed {
 #if thx.csv
 		return parse(thx.csv.Csv.decode(csvString), lexicalType, env);
-#elsif csv
+#elseif csv
 		return parse(format.csv.Utf8Reader.parseCsv(csvString), lexicalType, env);
 #else
 		return parse([for (row in csvString.split("\n")) row.split(",")], lexicalType, env);
