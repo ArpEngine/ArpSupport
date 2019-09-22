@@ -41,6 +41,7 @@ import arp.testParams.IoProviders.*;
 import arp.testParams.PersistIoProviders.*;
 import arp.utils.ArpIntUtilCase;
 import arp.utils.ArpStringUtilCase;
+import arp.utils.FormatTextCase;
 import arp.utils.StringBufferCase;
 import picotest.PicoTestRunner;
 
@@ -54,6 +55,7 @@ class ArpSupportTestSuite {
 		r.load(ArpIntUtilCase);
 		r.load(ArpStringUtilCase);
 		r.load(StringBufferCase);
+		r.load(FormatTextCase);
 
 		r.load(BytesToolCase);
 		r.load(FifoCase);
