@@ -19,10 +19,11 @@ class VerbosePersistInput implements IPersistInput {
 		var line:String = data.shift();
 		var a:Array<String> = line.split(":");
 		a.shift();
+		a.shift();
 		var payload:String = a.join(":");
 		for (expected in value) {
 			var command:String = a.shift();
-			if (expected != command) throw 'unmatched command $line, expected ${payload}';
+			if (expected != command) throw 'unmatched command $line, expected ${value.join(":")}';
 		}
 		return a.join(":");
 	}
