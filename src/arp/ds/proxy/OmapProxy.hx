@@ -48,6 +48,7 @@ class OmapProxy<K, V, X, W> implements IOmap<K, V> {
 
 	//resolve
 	public function resolveKeyIndex(k:K):Int return this.omap.resolveKeyIndex(this.unproxyKey(k));
+	public function resolveKeyAt(index:Int):Null<K> return this.proxyKey(this.omap.resolveKeyAt(index));
 	public function resolveName(v:V):Null<K> return this.proxyKey(this.omap.resolveName(this.unproxyValue(v)));
 	public function indexOf(v:V, ?fromIndex:Int):Int return this.omap.indexOf(this.unproxyValue(v), fromIndex);
 	public function lastIndexOf(v:V, ?fromIndex:Int):Int return this.omap.lastIndexOf(this.unproxyValue(v), fromIndex);
