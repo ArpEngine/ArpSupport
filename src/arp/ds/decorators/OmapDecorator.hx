@@ -32,6 +32,7 @@ class OmapDecorator<K, V> implements IOmap<K, V> {
 
 	//resolve
 	public function resolveKeyIndex(k:K):Int return this.omap.resolveKeyIndex(k);
+	public function resolveKeyAt(index:Int):Null<K> return this.omap.resolveKeyAt(index);
 	public function resolveName(v:V):Null<K> return this.omap.resolveName(v);
 	public function indexOf(v:V, ?fromIndex:Int):Int return this.omap.indexOf(v, fromIndex);
 	public function lastIndexOf(v:V, ?fromIndex:Int):Int return this.omap.lastIndexOf(v, fromIndex);

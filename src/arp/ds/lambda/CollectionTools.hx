@@ -1,5 +1,6 @@
 package arp.ds.lambda;
 
+import arp.ds.access.IOmapResolve;
 import arp.ds.access.ICollectionRead;
 import arp.ds.access.ICollectionRemove;
 import arp.ds.access.IListAmend.IListAmendCursor;
@@ -87,6 +88,16 @@ class CollectionTools {
 
 	inline public static function lastIndexOfImpl<V>(base:ICollectionRead<V>, v:V, ?fromIndex:Int):Int {
 		var i:Int = 0; var index:Int = -1; for (x in base) if (x == v) index = i++; else i++; return index;
+	}
+
+	// IOmapResolve
+
+	public static function resolveKeyIndexImpl<K, V>(base:IOmapResolve<K, V>, k:K):Int {
+		var i:Int = 0; for (x in base.keys()) if (x == k) return i else i++; return -1;
+	}
+
+	public static function resolveKeyAtImpl<K, V>(base:IOmapResolve<K, V>, index:Int):Null<K> {
+		var i:Int = 0; for (k in base.keys()) if (i++ == index) return k; return null;
 	}
 
 	// ISetWrite
