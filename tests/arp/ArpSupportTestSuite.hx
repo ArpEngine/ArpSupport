@@ -24,6 +24,8 @@ import arp.io.BytesToolCase;
 import arp.io.FifoCase;
 import arp.io.InputWrapperCase;
 import arp.io.OutputWrapperCase;
+import arp.iterators.CompositeIteratorCase;
+import arp.iterators.EmptyIteratorCase;
 import arp.iterators.ERegIteratorCase;
 import arp.iterators.StepIteratorCase;
 import arp.iterators.StepToIteratorCase;
@@ -48,9 +50,11 @@ import picotest.PicoTestRunner;
 class ArpSupportTestSuite {
 
 	public static function addTo(r:PicoTestRunner) {
+		r.load(EmptyIteratorCase);
 		r.load(ERegIteratorCase);
 		r.load(StepIteratorCase);
 		r.load(StepToIteratorCase);
+		r.load(CompositeIteratorCase);
 
 		r.load(ArpIntUtilCase);
 		r.load(ArpStringUtilCase);
