@@ -7,23 +7,23 @@ class CompositeIterator<T> {
 
 	inline public function new(iterable:Iterable<Iterable<T>>) {
 		this.iterators = iterable.iterator();
-		if (this.iterators.hasNext()) this.slurp();
-	}
-
-	inline public function hasNext():Bool return this.iterators.hasNext();
-
-	inline public function next():T {
-		if (this.iterator.hasNext()) {
-			var t = this.iterator.next();
+		if (this.iterators.hasNext()) {
+			this.iterator = this.iterators.next().iterator();
 			this.slurp();
-			return t;
 		} else {
-			// undefined behaviour
-			return cast null;
+			this.iterator = new EmptyIterator();
 		}
 	}
 
-	inline private function slurp():Void {
+	inline public function hasNext():Bool return this.iterator.hasNext();
+
+	inline public function next():T {
+		var t = this.iterator.next();
+		this.slurp();
+		return t;
+	}
+
+	private function slurp():Void {
 		while (!this.iterator.hasNext()) {
 			if (this.iterators.hasNext()) {
 				this.iterator = this.iterators.next().iterator();
