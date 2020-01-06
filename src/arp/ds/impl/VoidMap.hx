@@ -24,7 +24,7 @@ class VoidMap<K, V> implements IMap<K, V> {
 	public function keyValueIterator():KeyValueIterator<K, V> return new EmptyIterator();
 
 	//resolve
-	public function resolveName(v:V):Null<K> return null;
+	public function keyOf(v:V):Null<K> return null;
 
 	//write
 	public function set(k:K, v:V):Void return;

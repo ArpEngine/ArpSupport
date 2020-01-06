@@ -31,7 +31,7 @@ class VoidOmap<K, V> implements IOmap<K, V> {
 	//resolve
 	public function resolveKeyIndex(k:K):Int return -1;
 	public function resolveKeyAt(index:Int):Null<K> return null;
-	public function resolveName(v:V):Null<K> return null;
+	public function keyOf(v:V):Null<K> return null;
 	public function indexOf(v:V, ?fromIndex:Int):Int return -1;
 	public function lastIndexOf(v:V, ?fromIndex:Int):Int return -1;
 
