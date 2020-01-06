@@ -35,10 +35,10 @@ class MapProxyCase {
 		assertEquals("2", me.get(3));
 		assertEquals("3", me.get(5));
 		assertEquals("4", me.get(7));
-		assertEquals(1, me.resolveName("1"));
-		assertEquals(3, me.resolveName("2"));
-		assertEquals(5, me.resolveName("3"));
-		assertEquals(7, me.resolveName("4"));
+		assertEquals(1, me.keyOf("1"));
+		assertEquals(3, me.keyOf("2"));
+		assertEquals(5, me.keyOf("3"));
+		assertEquals(7, me.keyOf("4"));
 	}
 
 }

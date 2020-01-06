@@ -29,7 +29,7 @@ class MapOfOmap<K, V> implements IMap<K, V> {
 	public function keyValueIterator():KeyValueIterator<K, V> return this.omap.keyValueIterator();
 
 	//resolve
-	public function resolveName(v:V):Null<K> return this.omap.resolveName(v);
+	public function keyOf(v:V):Null<K> return this.omap.keyOf(v);
 
 	//write
 	public function set(k:K, v:V):Void this.omap.addPair(k, v);

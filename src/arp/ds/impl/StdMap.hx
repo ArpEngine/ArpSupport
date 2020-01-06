@@ -27,7 +27,7 @@ class StdMap<K, V> implements IMap<K, V> {
 	inline public function keyValueIterator():KeyValueIterator<K, V> return this.value.keyValueIterator();
 
 	//resolve
-	public function resolveName(v:V):Null<K> {
+	public function keyOf(v:V):Null<K> {
 		for (k in this.value.keys()) if (this.value.get(k) == v) return k;
 		return null;
 	}
@@ -37,7 +37,7 @@ class StdMap<K, V> implements IMap<K, V> {
 
 	//remove
 	public function remove(v:V):Bool {
-		var k:Null<K> = this.resolveName(v);
+		var k:Null<K> = this.keyOf(v);
 		return if (k != null) this.value.remove(k) else false;
 	}
 	public function removeKey(k:K):Bool return this.value.remove(k);

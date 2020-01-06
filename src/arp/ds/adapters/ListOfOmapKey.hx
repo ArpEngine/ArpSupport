@@ -25,9 +25,9 @@ class ListOfOmapKey<K, V> implements IList<K> {
 	public function toString():String return CollectionTools.listToStringImpl(this);
 	public var length(get, never):Int;
 	public function get_length():Int return this.omap.length;
-	public function first():Null<K> return this.omap.resolveName(this.omap.first());
-	public function last():Null<K> return this.omap.resolveName(this.omap.last());
-	public function getAt(index:Int):Null<K> return this.omap.resolveName(this.omap.getAt(index));
+	public function first():Null<K> return this.omap.keyOf(this.omap.first());
+	public function last():Null<K> return this.omap.keyOf(this.omap.last());
+	public function getAt(index:Int):Null<K> return this.omap.keyOf(this.omap.getAt(index));
 
 	//resolve
 	public function indexOf(v:K, ?fromIndex:Int):Int return this.omap.resolveKeyIndex(v);

@@ -40,7 +40,7 @@ class StdOmap<K, V> implements IOmap<K, V> {
 	//resolve
 	public function resolveKeyIndex(k:K):Int return this._keys.indexOf(k);
 	public function resolveKeyAt(index:Int):Null<K> return this._keys[index];
-	public function resolveName(v:V):Null<K> {
+	public function keyOf(v:V):Null<K> {
 		for (k in this.value.keys()) if (this.value.get(k) == v) return k;
 		return null;
 	}

@@ -76,7 +76,7 @@ class CollectionTools {
 
 	// IMapResolve
 
-	public static function resolveNameImpl<K, V>(base:IMapRead<K, V>, v:V):Null<K> {
+	public static function keyOfImpl<K, V>(base:IMapRead<K, V>, v:V):Null<K> {
 		for (k in base.keys()) if (base.get(k) == v) return k; return null;
 	}
 
