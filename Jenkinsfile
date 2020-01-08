@@ -58,6 +58,19 @@ pipeline {
             }
         }
 
+        stage('hl') {
+            steps {
+                catchError {
+                    sh "ARPCI_PROJECT=ArpSupport ARPCI_TARGET=hl haxelib run arp_ci test"
+                }
+            }
+            post {
+                always { junit(testResults: "bin/junit/hl.xml", keepLongStdio: true); }
+                success { githubNotify(context: "${STAGE_NAME}", description: '', status: 'SUCCESS'); }
+                unsuccessful { githubNotify(context: "${STAGE_NAME}", description: '', status: 'FAILURE'); }
+            }
+        }
+
         stage('cpp') {
             steps {
                 catchError {
