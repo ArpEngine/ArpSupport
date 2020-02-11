@@ -1,10 +1,10 @@
-package arp.ds.decorators;
+package arp.ds.decorators.base;
 
 import arp.ds.lambda.CollectionTools;
 import arp.ds.access.ISetAmend.ISetAmendCursor;
 import arp.ds.ISet;
 
-class SetDecorator<V> implements ISet<V> {
+class BaseSetDecorator<V> implements ISet<V> {
 
 	private var set:ISet<V>;
 

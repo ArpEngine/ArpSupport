@@ -1,10 +1,10 @@
-package arp.ds.decorators;
+package arp.ds.decorators.base;
 
 import arp.ds.lambda.CollectionTools;
 import arp.ds.access.IMapAmend.IMapAmendCursor;
 import arp.ds.IMap;
 
-class MapDecorator<K, V> implements IMap<K, V> {
+class BaseMapDecorator<K, V> implements IMap<K, V> {
 
 	private var map:IMap<K, V>;
 	public var isUniqueKey(get, never):Bool;

@@ -1,10 +1,10 @@
-package arp.ds.decorators;
+package arp.ds.decorators.base;
 
 import arp.ds.lambda.CollectionTools;
 import arp.ds.access.IListAmend.IListAmendCursor;
 import arp.ds.IList;
 
-class ListDecorator<V> implements IList<V> {
+class BaseListDecorator<V> implements IList<V> {
 
 	private var list:IList<V>;
 

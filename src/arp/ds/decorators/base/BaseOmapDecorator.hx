@@ -1,10 +1,10 @@
-package arp.ds.decorators;
+package arp.ds.decorators.base;
 
 import arp.ds.lambda.CollectionTools;
 import arp.ds.access.IOmapAmend.IOmapAmendCursor;
 import arp.ds.IOmap;
 
-class OmapDecorator<K, V> implements IOmap<K, V> {
+class BaseOmapDecorator<K, V> implements IOmap<K, V> {
 
 	private var omap:IOmap<K, V>;
 

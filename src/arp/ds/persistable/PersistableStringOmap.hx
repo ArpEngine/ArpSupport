@@ -1,11 +1,11 @@
 ﻿package arp.ds.persistable;
 
-import arp.ds.decorators.OmapDecorator;
+import arp.ds.decorators.base.BaseOmapDecorator;
 import arp.persistable.IPersistInput;
 import arp.persistable.IPersistOutput;
 import arp.persistable.IPersistable;
 
-class PersistableStringOmap extends OmapDecorator<String, String> implements IPersistable {
+class PersistableStringOmap extends BaseOmapDecorator<String, String> implements IPersistable {
 
 	public function new(omap:IOmap<String, String>) {
 		super(omap);
