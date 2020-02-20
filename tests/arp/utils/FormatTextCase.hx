@@ -23,6 +23,22 @@ class FormatTextCase {
 		assertEquals("hogefuga", me.publish(params));
 	}
 
+	public function testFromAnon() {
+		me = new FormatText("{foo}{bar}");
+		var params = {
+			foo: "hoge",
+			bar: "fuga",
+			baz: "piyo",
+		};
+		assertEquals("hogefuga", me.publish(params));
+	}
+
+	public function testFromArray() {
+		me = new FormatText("{0}{2}");
+		var params = ["hoge", "piyo", "fuga"];
+		assertEquals("hogefuga", me.publish(params));
+	}
+
 	public function testCustomFormatterPublish() {
 		var customFormatter:Any->String = _ -> "baz";
 		me = new FormatText("{foo}", customFormatter);

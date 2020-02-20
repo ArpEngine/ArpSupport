@@ -1,5 +1,7 @@
 package arp.utils.formatText;
 
+import arp.utils.FormatText.TCustomFormatter;
+import arp.utils.FormatText.TFormatParams;
 import arp.iterators.ERegIterator;
 
 class ParametrizedNode implements INode {
@@ -30,7 +32,7 @@ class ParametrizedNode implements INode {
 		if (array[2] != null) this._default = array[2];
 	}
 
-	public function publishSelf(params:String->Any, customFormatter:Any->String):String {
+	public function publishSelf(params:TFormatParams, customFormatter:TCustomFormatter):String {
 		if (params == null) return this.value;
 
 		var param:Any = params(this._name);

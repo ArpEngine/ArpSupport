@@ -1,6 +1,9 @@
 package arp.utils.formatText;
 
+import arp.utils.FormatText.TCustomFormatter;
+import arp.utils.FormatText.TFormatParams;
+
 interface INode {
-	function publishSelf(params:String->Any, customFormatter:Any->String):String;
+	function publishSelf(params:TFormatParams, customFormatter:TCustomFormatter):String;
 }
 
