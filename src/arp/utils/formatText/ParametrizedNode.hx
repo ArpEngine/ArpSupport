@@ -7,37 +7,16 @@ import arp.utils.FormatText.TFormatParams;
 class ParametrizedNode implements INode {
 
 	private var value:String;
-	private var name:String = "";
-	private var digits:Int = 0;
-	private var precision:Int = 0;
-	private var flags:String = "";
-	private var defaultValue:String = "";
-
-	private static final eregNew:EReg = ~/([0-9]+)?(\.[0-9]+)?([a-zA-Z]+)?/;
-
-	private var flagAlign(get, never):PadAlign;
-	private function get_flagAlign():PadAlign {
-		var flagAlign:PadAlign = PadAlign.Left;
-		if (this.flags.indexOf("r") >= 0) flagAlign = PadAlign.Right;
-		if (this.flags.indexOf("c") >= 0) flagAlign = PadAlign.Center;
-		return flagAlign;
-	}
+	private var name:String;
+	private var formatOption:FormatOption;
+	private var defaultValue:String;
 
 	public function new(value:String) {
 		this.value = value;
 		var array:Array<String> = value.substr(1, value.length - 2).split(":");
-		if (array[0] != null) this.name = array[0];
-		if (array[1] != null) {
-			if (eregNew.match(array[1])) {
-				var digits:String = eregNew.matched(1);
-				var precision:String = eregNew.matched(2);
-				var flags:String = eregNew.matched(3);
-				if (digits != null) this.digits = Std.parseInt(digits);
-				if (precision != null) this.precision = Std.parseInt(precision);
-				if (flags != null) this.flags += flags;
-			}
-		}
-		if (array[2] != null) this.defaultValue = array.splice(2, array.length - 2).join(":");
+		this.name = if (array[0] != null) array[0] else "";
+		this.formatOption = if (array[1] != null) FormatOption.build(array[1]) else FormatOption.empty;
+		this.defaultValue = if (array[2] != null) array.splice(2, array.length - 2).join(":") else "";
 	}
 
 	public function publishSelf(params:TFormatParams, customFormatter:TCustomFormatter, customAlign:TCustomAlign):String {
@@ -53,12 +32,13 @@ class ParametrizedNode implements INode {
 		}
 
 		var result = customAlign(str);
-		if (result == null) result = doAlign(str, " ", this.digits, this.flagAlign);
+		if (result == null) result = doAlign(str, " ", this.formatOption);
 		return result;
 	}
 
-	inline public static function doAlign(str:String, c:String, digits:Int, align:PadAlign):String {
-		switch (align) {
+	inline public static function doAlign(str:String, c:String, formatOption:FormatOption):String {
+		var digits:Int = formatOption.digits;
+		switch (formatOption.flagAlign) {
 			case PadAlign.Left:
 				while (str.length < digits) str += c;
 			case PadAlign.Right:
