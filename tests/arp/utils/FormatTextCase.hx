@@ -39,6 +39,21 @@ class FormatTextCase {
 		assertEquals("hogefuga", me.publish(params));
 	}
 
+	public function testAlign() {
+		me = new FormatText("{0:l},{1:c},{2:r}");
+		var params = _ -> "hoge";
+		assertEquals("hoge,hoge,hoge", me.publish(params));
+		me = new FormatText("{0:7l},{1:7c},{2:7r}");
+		var params = _ -> "fuga";
+		assertEquals("fuga   ,  fuga ,   fuga", me.publish(params));
+	}
+
+	public function testDefault() {
+		me = new FormatText("{0::hoge}{0::fuga}");
+		var params = _ -> null;
+		assertEquals("hogefuga", me.publish(params));
+	}
+
 	public function testCustomFormatterPublish() {
 		var customFormatter:Any->String = _ -> "baz";
 		me = new FormatText("{foo}", customFormatter);

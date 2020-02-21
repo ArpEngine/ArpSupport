@@ -1,20 +1,23 @@
 package arp.utils;
 
+import arp.iterators.ERegIterator;
 import arp.utils.formatText.FixedNode;
 import arp.utils.formatText.INode;
 import arp.utils.formatText.ParametrizedNode;
-import arp.iterators.ERegIterator;
 
 class FormatText {
 
 	private var _nodes:Array<INode>;
 
-	public function new(value:String, customFormatter:CustomFormatter = null) {
+	private static final eregNew:EReg = ~/[^{]+|\{[^}]*\}/;
+
+	public function new(value:String, customFormatter:CustomFormatter = null, customAlign:CustomAlign = null) {
 		this._nodes = [];
 
 		if (customFormatter != null) this.customFormatter = customFormatter;
+		if (customAlign != null) this.customAlign = customAlign;
 
-		for (str in new ERegIterator(~/[^{]+|\{[^}]*\}/, value)) {
+		for (str in new ERegIterator(eregNew, value)) {
 			switch (str.charAt(0)) {
 				case "\x7B":
 					this._nodes.push(new ParametrizedNode(str));
@@ -26,11 +29,12 @@ class FormatText {
 
 	public function publish(params:FormatParams):String {
 		var result:StringBuf = new StringBuf();
-		for (node in this._nodes) result.add(node.publishSelf(params, customFormatter));
+		for (node in this._nodes) result.add(node.publishSelf(params, customFormatter, customAlign));
 		return result.toString();
 	}
 
 	private dynamic function customFormatter(param:Any):String return null;
+	private dynamic function customAlign(str:String):String return null;
 }
 
 typedef TFormatParams = (name:String)->Any;
@@ -43,4 +47,9 @@ abstract FormatParams(TFormatParams) to TFormatParams {
 typedef TCustomFormatter = (param:Any)->String;
 abstract CustomFormatter(TCustomFormatter) to TCustomFormatter {
 	@:from inline public static function fromFunc(func:(param:Any)->String):CustomFormatter return cast func;
+}
+
+typedef TCustomAlign = (param:String)->String;
+abstract CustomAlign(TCustomAlign) to TCustomAlign {
+	@:from inline public static function fromFunc(func:(str:String)->String):CustomAlign return cast func;
 }
