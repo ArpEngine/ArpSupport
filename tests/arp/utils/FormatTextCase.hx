@@ -41,11 +41,11 @@ class FormatTextCase {
 
 	public function testAlign() {
 		me = new FormatText("{0:l},{1:c},{2:r}");
-		var params = _ -> "hoge";
+		var params:String->Any = _ -> "hoge";
 		assertEquals("hoge,hoge,hoge", me.publish(params));
 		me = new FormatText("{0:7l},{1:7c},{2:7r}");
-		var params = _ -> "fuga";
-		assertEquals("fuga   ,  fuga ,   fuga", me.publish(params));
+		var params:String->Any = _ -> "fuga";
+		assertEquals("fuga   , fuga  ,   fuga", me.publish(params));
 	}
 
 	public function testDefault() {
