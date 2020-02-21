@@ -8,11 +8,15 @@ class FormatOption {
 	public var precision(default, null):Int = 0;
 	public var flags(default, null):String = "";
 
+	public function flag(char:String):Bool {
+		return this.flags.indexOf(char) >= 0;
+	}
+
 	public var flagAlign(get, never):PadAlign;
 	private function get_flagAlign():PadAlign {
 		var flagAlign:PadAlign = PadAlign.Left;
-		if (this.flags.indexOf("r") >= 0) flagAlign = PadAlign.Right;
-		if (this.flags.indexOf("c") >= 0) flagAlign = PadAlign.Center;
+		if (this.flag("r")) flagAlign = PadAlign.Right;
+		if (this.flag("c")) flagAlign = PadAlign.Center;
 		return flagAlign;
 	}
 
