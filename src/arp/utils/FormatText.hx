@@ -43,7 +43,7 @@ typedef TFormatParams = (name:String)->Any;
 abstract FormatParams(TFormatParams) to TFormatParams {
 	@:from inline public static function fromFunc(func:(name:String)->Any):FormatParams return cast func;
 	@:from inline public static function fromArray<T>(array:Array<T>):FormatParams return cast ((name:String) -> array[Std.parseInt(name)]);
-	@:from inline public static function fromAnon(anon:Dynamic):FormatParams return (name:String) -> Reflect.field(anon, name);
+	inline public static function fromAnon(anon:Dynamic):FormatParams return (name:String) -> Reflect.field(anon, name);
 }
 
 typedef TCustomFormatter = (param:Any)->String;

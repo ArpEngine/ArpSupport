@@ -1,5 +1,6 @@
 ﻿package arp.utils;
 
+import arp.utils.FormatText.FormatParams;
 import picotest.PicoAssert.*;
 
 class FormatTextCase {
@@ -30,7 +31,7 @@ class FormatTextCase {
 			bar: "fuga",
 			baz: "piyo",
 		};
-		assertEquals("hogefuga", me.publish(params));
+		assertEquals("hogefuga", me.publish(FormatParams.fromAnon(params)));
 	}
 
 	public function testFromArray() {
