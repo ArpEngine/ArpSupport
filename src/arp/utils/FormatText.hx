@@ -7,11 +7,13 @@ import arp.utils.formatText.ParametrizedNode;
 
 class FormatText {
 
+	public var source(default, null):String;
 	private var _nodes:Array<INode>;
 
 	private static final eregNew:EReg = ~/[^{]+|\{[^}]*\}/;
 
 	public function new(value:String, customFormatter:CustomFormatter = null, customAlign:CustomAlign = null) {
+		this.source = value;
 		this._nodes = [];
 
 		if (customFormatter != null) this.customFormatter = customFormatter;
