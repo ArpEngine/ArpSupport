@@ -39,4 +39,26 @@ class FormatOption {
 			if (flags != null) flags else ""
 		);
 	}
+
+	inline public function basicFormat(param:Any):String return Std.string(param);
+
+	inline public function basicAlign(str:String, c:String):String {
+		var digits:Int = this.digits;
+		switch (this.flagAlign) {
+			case PadAlign.Left:
+				while (str.length < digits) str += c;
+			case PadAlign.Right:
+				while (str.length < digits) str = c + str;
+			case PadAlign.Center:
+				var b:Bool = false;
+				while (str.length < digits) str = (b = !b) ? (str + c) : (c + str);
+		}
+		return str;
+	}
+}
+
+enum PadAlign {
+	Left;
+	Center;
+	Right;
 }

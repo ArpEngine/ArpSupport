@@ -28,25 +28,12 @@ class ParametrizedNode implements INode {
 			str = this.defaultValue;
 		} else {
 			str = customFormatter(param, this.formatOption);
-			if (str == null) str = Std.string(param);
+			if (str == null) str = this.formatOption.basicFormat(param);
 		}
 
 		var result = customAlign(str, this.formatOption);
-		if (result == null) result = doAlign(str, " ", this.formatOption);
+		if (result == null) result = this.formatOption.basicAlign(str, " ");
 		return result;
 	}
 
-	inline public static function doAlign(str:String, c:String, formatOption:FormatOption):String {
-		var digits:Int = formatOption.digits;
-		switch (formatOption.flagAlign) {
-			case PadAlign.Left:
-				while (str.length < digits) str += c;
-			case PadAlign.Right:
-				while (str.length < digits) str = c + str;
-			case PadAlign.Center:
-				var b:Bool = false;
-				while (str.length < digits) str = (b = !b) ? (str + c) : (c + str);
-		}
-		return str;
-	}
 }
