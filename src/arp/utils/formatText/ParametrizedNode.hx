@@ -27,11 +27,11 @@ class ParametrizedNode implements INode {
 		if (param == null) {
 			str = this.defaultValue;
 		} else {
-			str = customFormatter(param);
+			str = customFormatter(param, this.formatOption);
 			if (str == null) str = Std.string(param);
 		}
 
-		var result = customAlign(str);
+		var result = customAlign(str, this.formatOption);
 		if (result == null) result = doAlign(str, " ", this.formatOption);
 		return result;
 	}
