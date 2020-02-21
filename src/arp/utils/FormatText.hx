@@ -25,11 +25,9 @@ class FormatText {
 	}
 
 	public function publish(params:FormatParams):String {
-		var result:String = "";
-		for (node in this._nodes) {
-			result += node.publishSelf(params, customFormatter);
-		}
-		return result;
+		var result:StringBuf = new StringBuf();
+		for (node in this._nodes) result.add(node.publishSelf(params, customFormatter));
+		return result.toString();
 	}
 
 	private dynamic function customFormatter(param:Any):String return null;
