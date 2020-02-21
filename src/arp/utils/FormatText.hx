@@ -1,17 +1,25 @@
 package arp.utils;
 
 import arp.iterators.ERegIterator;
+import arp.utils.formatText.FixedNode;
+import arp.utils.formatText.INode;
+import arp.utils.formatText.ParametrizedNode;
 
 class FormatText {
 
+	public var source(default, null):String;
 	private var _nodes:Array<INode>;
 
-	public function new(value:String, customFormatter:Any->String = null) {
+	private static final eregNew:EReg = ~/[^{]+|\{[^}]*\}/;
+
+	public function new(value:String, customFormatter:CustomFormatter = null, customAlign:CustomAlign = null) {
+		this.source = value;
 		this._nodes = [];
 
 		if (customFormatter != null) this.customFormatter = customFormatter;
+		if (customAlign != null) this.customAlign = customAlign;
 
-		for (str in new ERegIterator(~/[^{]+|\{[^}]*\}/, value)) {
+		for (str in new ERegIterator(eregNew, value)) {
 			switch (str.charAt(0)) {
 				case "\x7B":
 					this._nodes.push(new ParametrizedNode(str));
@@ -21,96 +29,29 @@ class FormatText {
 		}
 	}
 
-	public function publish(params:String->Any):String {
-		var result:String = "";
-		for (node in this._nodes) {
-			result += node.publishSelf(params, customFormatter);
-		}
-		return result;
+	public function publish(params:FormatParams):String {
+		var result:StringBuf = new StringBuf();
+		for (node in this._nodes) result.add(node.publishSelf(params, customFormatter, customAlign));
+		return result.toString();
 	}
 
 	private dynamic function customFormatter(param:Any):String return null;
+	private dynamic function customAlign(str:String):String return null;
 }
 
-private interface INode {
-	function publishSelf(params:String->Any, customFormatter:Any->String):String;
+typedef TFormatParams = (name:String)->Any;
+abstract FormatParams(TFormatParams) to TFormatParams {
+	@:from inline public static function fromFunc(func:(name:String)->Any):FormatParams return cast func;
+	@:from inline public static function fromArray<T>(array:Array<T>):FormatParams return cast ((name:String) -> array[Std.parseInt(name)]);
+	inline public static function fromAnon(anon:Dynamic):FormatParams return (name:String) -> Reflect.field(anon, name);
 }
 
-private class FixedNode implements INode {
-	private var value:String;
-
-	public function new(value:String) this.value = value;
-
-	public function publishSelf(params:String->Any, customFormatter:Any->String):String return this.value;
+typedef TCustomFormatter = (param:Any)->String;
+abstract CustomFormatter(TCustomFormatter) to TCustomFormatter {
+	@:from inline public static function fromFunc(func:(param:Any)->String):CustomFormatter return cast func;
 }
 
-private class ParametrizedNode implements INode {
-
-	private var value:String;
-	private var _name:String = "";
-	private var _flagAlign:String = "l";
-	private var _flagDigits:Int = 0;
-	private var _flagPrecision:Int = 0;
-	private var _flagFormat:String = "s";
-	private var _default:String = " ";
-
-	public function new(value:String) {
-		this.value = value;
-		var array:Array<String> = value.substr(1, value.length - 2).split(":");
-		if (array[0] != null) this._name = array[0];
-		if (array[1] != null) {
-			for (flag in new ERegIterator(~/[0-9]+|\.[0-9]+|[lrcsz]/, array[1])) {
-				switch (flag.charAt(0)) {
-					case "l", "r", "c":
-						this._flagAlign = flag;
-					case "s":
-						this._flagFormat = flag;
-					case "z":
-						this._flagFormat = flag;
-						this._default = "　";
-					case ".":
-						this._flagPrecision = Std.parseInt(flag.substr(1));
-					default:
-						this._flagDigits = Std.parseInt(flag);
-				}
-			}
-		}
-		if (array[2] != null) this._default = array[2];
-	}
-
-	private static function toZenChar(f:EReg):String {
-		return "０１２３４５６７８９".charAt(Std.parseInt(f.matched(0)));
-	}
-
-	public static function toZenString(value:Float):String {
-		return ~/./.map(Std.string(value), toZenChar);
-	}
-
-	public function publishSelf(params:String->Any, customFormatter:Any->String):String {
-		if (params == null) return this.value;
-
-		var param:Any = params(this._name);
-		var str:String = customFormatter(param);
-		if (str == null) {
-			if (Std.is(param, Float)) {
-				switch (this._flagFormat) {
-					case "z":
-						str = toZenString(param);
-					case _:
-				}
-			}
-		}
-		if (str == null) str = Std.string(param);
-
-		switch (this._flagAlign) {
-			case "l":
-				while (str.length < this._flagDigits) str += this._default;
-			case "r":
-				while (str.length < this._flagDigits) str = this._default + str;
-			case "c":
-				var b:Bool = false;
-				while (str.length < this._flagDigits) str = (b = !b) ? (str + this._default) : (this._default + str);
-		}
-		return str;
-	}
+typedef TCustomAlign = (param:String)->String;
+abstract CustomAlign(TCustomAlign) to TCustomAlign {
+	@:from inline public static function fromFunc(func:(str:String)->String):CustomAlign return cast func;
 }
