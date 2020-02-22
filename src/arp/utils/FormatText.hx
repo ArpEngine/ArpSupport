@@ -35,6 +35,8 @@ class FormatText {
 		return result.toString();
 	}
 
+	inline public function publishAnon(params:Dynamic):String return this.publish(FormatParams.fromAnon(params));
+
 	private dynamic function customFormatter(param:Any, formatOption:FormatOption):String return null;
 	private dynamic function customAlign(str:String, formatOption:FormatOption):String return null;
 }
