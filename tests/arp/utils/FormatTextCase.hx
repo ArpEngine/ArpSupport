@@ -7,6 +7,15 @@ class FormatTextCase {
 
 	private var me:FormatText;
 
+	public function testFormatOption() {
+		assertEquals("", FormatOption.build("").flags);
+		assertEquals("a", FormatOption.build("a").flags);
+		assertEquals("a", FormatOption.build("a9").flags);
+		assertEquals("b", FormatOption.build("9b").flags);
+		assertEquals("ab", FormatOption.build("a9b").flags);
+		assertEquals("ab8c", FormatOption.build("a9b8c").flags);
+	}
+
 	public function testPublish() {
 		me = new FormatText("{foo}{bar}");
 		assertEquals("{foo}{bar}", me.publish(null));
