@@ -8,6 +8,9 @@ class FormatOption {
 	public var precision(default, null):Int;
 	public var flags(default, null):String;
 
+	public var width(get, never):Int;
+	private function get_width():Int return digits + if (precision > 0) precision + 1 else 0;
+
 	public function flag(char:String):Bool {
 		return this.flags.indexOf(char) >= 0;
 	}
@@ -45,15 +48,18 @@ class FormatOption {
 	inline public function basicFormat(param:Any):String return Std.string(param);
 
 	inline public function basicAlign(str:String, c:String):String {
-		var digits:Int = this.digits;
+		return this.basicPad(str, c, (this.width - str.length));
+	}
+
+	inline public function basicPad(str:String, c:String, n:Int):String {
 		switch (this.flagAlign) {
 			case PadAlign.Left:
-				while (str.length < digits) str += c;
+				for (i in 0...n) str += c;
 			case PadAlign.Right:
-				while (str.length < digits) str = c + str;
+				for (i in 0...n) str = c + str;
 			case PadAlign.Center:
 				var b:Bool = false;
-				while (str.length < digits) str = (b = !b) ? (str + c) : (c + str);
+				for (i in 0...n) str = (b = !b) ? (str + c) : (c + str);
 		}
 		return str;
 	}
