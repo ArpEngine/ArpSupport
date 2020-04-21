@@ -1,5 +1,7 @@
 package arp.curve.impl;
 
+import arp.utils.ArpStringUtil;
+
 class CurveBezier3 implements ICurve {
 
 	public var l:Float;
@@ -28,4 +30,16 @@ class CurveBezier3 implements ICurve {
 	public function accumulate(t0:Float, t1:Float):Float {
 		return interpolate(t1) - interpolate(t0);
 	}
+
+	public static function build(source:Array<String>, getUnit:String->Float):CurveBezier3 {
+		return new CurveBezier3(
+			ArpStringUtil.parseRichFloat(source[0], getUnit),
+			ArpStringUtil.parseRichFloat(source[1], getUnit),
+			ArpStringUtil.parseRichFloat(source[2], getUnit),
+			ArpStringUtil.parseRichFloat(source[3], getUnit),
+			ArpStringUtil.parseRichFloat(source[4], getUnit)
+		);
+	}
+
+	public function toString():String return [x0, x1, x2, x3, l].join(",") + ":bezier3";
 }

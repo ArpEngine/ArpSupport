@@ -1,5 +1,7 @@
 package arp.curve.impl;
 
+import arp.utils.ArpStringUtil;
+
 class CurveQuadratic implements ICurve {
 
 	public var l:Float;
@@ -26,4 +28,15 @@ class CurveQuadratic implements ICurve {
 	public function accumulate(t0:Float, t1:Float):Float {
 		return interpolate(t1) - interpolate(t0);
 	}
+
+	public static function build(source:Array<String>, getUnit:String->Float):CurveQuadratic {
+		return new CurveQuadratic(
+			ArpStringUtil.parseRichFloat(source[0], getUnit),
+			ArpStringUtil.parseRichFloat(source[1], getUnit),
+			ArpStringUtil.parseRichFloat(source[2], getUnit),
+			ArpStringUtil.parseRichFloat(source[3], getUnit)
+		);
+	}
+
+	public function toString():String return [x0, d, x1, l].join(",") + ":quadratic";
 }

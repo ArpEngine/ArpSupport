@@ -1,5 +1,7 @@
 package arp.curve.impl;
 
+import arp.utils.ArpStringUtil;
+
 class CurveCubic implements ICurve {
 
 	public var l:Float;
@@ -29,4 +31,16 @@ class CurveCubic implements ICurve {
 	public function accumulate(t0:Float, t1:Float):Float {
 		return interpolate(t1) - interpolate(t0);
 	}
+
+	public static function build(source:Array<String>, getUnit:String->Float):CurveCubic {
+		return new CurveCubic(
+			ArpStringUtil.parseRichFloat(source[0], getUnit),
+			ArpStringUtil.parseRichFloat(source[1], getUnit),
+			ArpStringUtil.parseRichFloat(source[2], getUnit),
+			ArpStringUtil.parseRichFloat(source[3], getUnit),
+			ArpStringUtil.parseRichFloat(source[4], getUnit)
+		);
+	}
+
+	public function toString():String return [x0, d0, d1, x1, l].join(",") + ":cubic";
 }
