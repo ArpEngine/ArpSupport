@@ -1,5 +1,13 @@
 package arp;
 
+import arp.curve.impl.CurveBezier2Case;
+import arp.curve.impl.CurveBezier3Case;
+import arp.curve.impl.CurveCubicAltCase;
+import arp.curve.impl.CurveCubicCase;
+import arp.curve.impl.CurveFlatCase;
+import arp.curve.impl.CurveLinearCase;
+import arp.curve.impl.CurveQuadraticAltCase;
+import arp.curve.impl.CurveQuadraticCase;
 import arp.ds.impl.VoidCollectionCase;
 import arp.ds.lambda.ListOpCase;
 import arp.ds.lambda.MapOpCase;
@@ -60,6 +68,15 @@ class ArpSupportTestSuite {
 		r.load(ArpStringUtilCase);
 		r.load(StringBufferCase);
 		r.load(FormatTextCase);
+
+		r.load(CurveBezier2Case);
+		r.load(CurveBezier3Case);
+		r.load(CurveCubicCase);
+		r.load(CurveCubicAltCase);
+		r.load(CurveQuadraticCase);
+		r.load(CurveQuadraticAltCase);
+		r.load(CurveFlatCase);
+		r.load(CurveLinearCase);
 
 		r.load(BytesToolCase);
 		r.load(FifoCase);
