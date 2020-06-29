@@ -60,4 +60,13 @@ class ArpSeed {
 	public static function fromTable(table:Array<Array<String>>, lexicalType:String = null, env:ArpSeedEnv = null):ArpSeed {
 		return new ArpTableSeedReader().parse(table, lexicalType, env);
 	}
+
+	public static function isSpecialAttrName(attrName:String):Bool {
+		return switch (attrName) {
+			case "type" | "class" |"name" | "id" | "ref" | "heat" | "key":
+				true;
+			case _: // "value" is treated as child seed
+				false;
+		}
+	}
 }
