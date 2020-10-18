@@ -1,5 +1,9 @@
 package arp.seed;
 
+import arp.seed.readers.ArpTableSeedReader;
+import arp.seed.readers.ArpTsvSeedReader;
+import arp.seed.readers.ArpCsvSeedReader;
+import arp.seed.readers.ArpXmlSeedReader;
 import haxe.io.Bytes;
 
 class ArpSeed {

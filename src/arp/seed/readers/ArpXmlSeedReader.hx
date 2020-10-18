@@ -1,4 +1,4 @@
-package arp.seed;
+package arp.seed.readers;
 
 import arp.seed.impl.ArpComplexSeed;
 import arp.seed.impl.ArpSimpleSeed;
