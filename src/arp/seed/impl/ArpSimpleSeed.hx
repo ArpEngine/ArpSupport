@@ -1,7 +1,6 @@
 package arp.seed.impl;
 
 import arp.iterators.SingleIterator;
-import arp.iterators.EmptyIterator;
 import arp.seed.ArpSeedValueKind;
 
 class ArpSimpleSeed extends ArpSeed {
@@ -13,6 +12,7 @@ class ArpSimpleSeed extends ArpSeed {
 
 	public function new(typeName:String, key:String, value:String, env:ArpSeedEnv, valueKind:ArpSeedValueKind) {
 		super(typeName);
+		if (value == null) throw "value must be nonnull";
 		this.key = key;
 		this.env = env;
 		this._value = value;
@@ -27,7 +27,5 @@ class ArpSimpleSeed extends ArpSeed {
 	override private function get_name():String return null;
 	override private function get_heat():String return null;
 
-	override inline public function iterator():Iterator<ArpSeed> {
-		return (this._value == null ? new EmptyIterator() : new SingleIterator(this));
-	}
+	override inline public function iterator():Iterator<ArpSeed> return new SingleIterator(this);
 }
