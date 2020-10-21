@@ -1,8 +1,10 @@
 package arp.seed;
 
+import arp.iterators.SimpleArrayIterator;
+import arp.iterators.SingleIterator;
+import arp.seed.readers.ArpCsvSeedReader;
 import arp.seed.readers.ArpTableSeedReader;
 import arp.seed.readers.ArpTsvSeedReader;
-import arp.seed.readers.ArpCsvSeedReader;
 import arp.seed.readers.ArpXmlSeedReader;
 import haxe.io.Bytes;
 
@@ -19,7 +21,21 @@ class ArpSeed {
 	public var className(default, null):Null<String> = null;
 	public var name(default, null):Null<String> = null;
 	public var heat(default, null):Null<String> = null;
-	public function iterator():Iterator<ArpSeed> throw "not implemented";
+
+	private var children:Null<Array<ArpSeed>>;
+	private var childrenWithEnv(get, null):Array<ArpSeed>;
+	private function get_childrenWithEnv():Array<ArpSeed> {
+		var value:Array<ArpSeed> = childrenWithEnv;
+		if (value != null) return value;
+		value = [];
+		for (x in this.env.getDefaultSeeds(this.seedName)) value.push(x);
+		for (x in this.env.getDefaultClassSeeds(this.seedName, this.className)) value.push(x);
+		for (x in this.children) value.push(x);
+		childrenWithEnv = value;
+		return value;
+	}
+
+	public function iterator():Iterator<ArpSeed> return if (children == null) new SingleIterator(this) else new SimpleArrayIterator(this.childrenWithEnv);
 
 	private function new(seedName:String, key:String, env:ArpSeedEnv) {
 		this.seedName = seedName;

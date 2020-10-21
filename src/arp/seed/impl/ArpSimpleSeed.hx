@@ -1,11 +1,8 @@
 package arp.seed.impl;
 
-import arp.iterators.SingleIterator;
 import arp.seed.ArpSeedValueKind;
 
 class ArpSimpleSeed extends ArpSeed {
-
-	private static var emptyChildren:Array<ArpSeed> = [];
 
 	private var _valueKind:ArpSeedValueKind;
 
@@ -18,6 +15,4 @@ class ArpSimpleSeed extends ArpSeed {
 	}
 
 	override private function get_valueKind():ArpSeedValueKind return this._valueKind;
-
-	override inline public function iterator():Iterator<ArpSeed> return new SingleIterator(this);
 }
