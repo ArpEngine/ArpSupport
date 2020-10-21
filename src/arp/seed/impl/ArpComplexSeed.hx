@@ -5,18 +5,7 @@ import arp.seed.ArpSeedValueKind;
 
 class ArpComplexSeed extends ArpSeed {
 
-	override private function get_isSimple():Bool return this._isSimple;
-	private var _isSimple:Bool = true;
-	override private function get_value():String return this._value;
-	private var _value:Null<String>;
 	override private function get_valueKind():ArpSeedValueKind return if (this.isSimple) ArpSeedValueKind.Literal else ArpSeedValueKind.None;
-
-	override private function get_className():String return _className;
-	private var _className(default, null):String;
-	override private function get_name():String return _name;
-	private var _name(default, null):String;
-	override private function get_heat():String return _heat;
-	private var _heat(default, null):String;
 
 	override public function iterator():Iterator<ArpSeed> return new SimpleArrayIterator(this.childrenWithEnv);
 
@@ -34,21 +23,20 @@ class ArpComplexSeed extends ArpSeed {
 		return value;
 	}
 
-	public function new(typeName:String, className:String, name:String, key:String, heat:String, children:Array<ArpSeed>, env:ArpSeedEnv) {
-		super(typeName);
-		this.key = key;
-		this.env = env;
+	public function new(seedName:String, className:String, name:String, key:String, heat:String, children:Array<ArpSeed>, env:ArpSeedEnv) {
+		super(seedName, key, env);
 
-		this._className = className;
-		this._name = name;
-		this._heat = heat;
+		this.className = className;
+		this.name = name;
+		this.heat = heat;
 		this.children = children;
+		this.isSimple = true;
 		for (child in children) {
 			if (child.seedName == "value") {
-				this._value = child.value;
+				this.value = child.value;
 			} else {
-				this._isSimple = false;
-				this._value = null;
+				this.isSimple = false;
+				this.value = null;
 				break;
 			}
 		}
