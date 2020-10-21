@@ -14,13 +14,12 @@ class ArpSeed {
 	public var key(default, null):String;
 	public var env(default, null):ArpSeedEnv;
 
-	public var value(default, null):Null<String>;
-	public var valueKind(default, null):ArpSeedValueKind = ArpSeedValueKind.Literal;
-	public var isSimple(default, null):Bool = true;
-
 	public var className(default, null):Null<String> = null;
 	public var name(default, null):Null<String> = null;
 	public var heat(default, null):Null<String> = null;
+
+	public var value(default, null):Null<String>;
+	public var valueKind(default, null):ArpSeedValueKind = ArpSeedValueKind.Literal;
 
 	private var children:Null<Array<ArpSeed>>;
 	private var childrenWithEnv(get, null):Array<ArpSeed>;
@@ -36,6 +35,8 @@ class ArpSeed {
 	}
 
 	public function iterator():Iterator<ArpSeed> return if (children == null) new SingleIterator(this) else new SimpleArrayIterator(this.childrenWithEnv);
+	public var isSimple(get, never):Bool;
+	private function get_isSimple():Bool return switch (this.valueKind) { case ArpSeedValueKind.Complex: false; case _: true; }
 
 	private function new(seedName:String, key:String, env:ArpSeedEnv) {
 		this.seedName = seedName;
@@ -58,15 +59,13 @@ class ArpSeed {
 		seed.name = name;
 		seed.heat = heat;
 		seed.children = children;
-		for (child in children) {
-			if (child.seedName == "value") {
-				seed.value = child.value;
-			} else {
-				seed.isSimple = false;
-				seed.value = null;
-				seed.valueKind = ArpSeedValueKind.None;
-				break;
-			}
+		if (children.length == 0) {
+			seed.valueKind = ArpSeedValueKind.Empty;
+		} else if (children.length == 1 && children[0].seedName == "value") {
+			seed.value = children[0].value;
+		} else {
+			seed.value = null;
+			seed.valueKind = ArpSeedValueKind.Complex;
 		}
 		return seed;
 	}

@@ -1,8 +1,9 @@
 package arp.seed;
 
 enum ArpSeedValueKind {
-	None;
+	Empty;
 	Ambigious;
 	Literal;
 	Reference;
+	Complex;
 }
