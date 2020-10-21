@@ -1,6 +1,5 @@
 package arp.seed;
 
-import arp.seed.impl.ArpSimpleSeed;
 import arp.utils.ArpIdGenerator;
 
 import picotest.PicoAssert.*;
@@ -54,7 +53,7 @@ class ArpSeedEnvCase {
 
 	public function testAddSeeds():Void {
 		var env1:ArpSeedEnv = ArpSeedEnv.empty();
-		var seed:ArpSimpleSeed = new ArpSimpleSeed("tt", "kk", "vv", env1, ArpSeedValueKind.Literal);
+		var seed:ArpSeed = ArpSeed.createSimple("tt", "kk", "vv", env1, ArpSeedValueKind.Literal);
 		env1.addSeeds("seed.key", "value", [seed]);
 		assertMatch([seed], env1.getDefaultSeeds("key"));
 	}

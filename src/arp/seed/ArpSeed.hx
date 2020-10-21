@@ -43,6 +43,34 @@ class ArpSeed {
 		this.env = env;
 	}
 
+	public static function createSimple(seedName:String, key:String, value:String, env:ArpSeedEnv, valueKind:ArpSeedValueKind):ArpSeed {
+		var seed:ArpSeed = new ArpSeed(seedName, key, env);
+		if (value == null) throw "value must be nonnull";
+		seed.value = value;
+		seed.valueKind = valueKind;
+		return seed;
+	}
+
+	public static function createComplex(seedName:String, className:String, name:String, key:String, heat:String, children:Array<ArpSeed>, env:ArpSeedEnv):ArpSeed {
+		var seed:ArpSeed = new ArpSeed(seedName, key, env);
+
+		seed.className = className;
+		seed.name = name;
+		seed.heat = heat;
+		seed.children = children;
+		for (child in children) {
+			if (child.seedName == "value") {
+				seed.value = child.value;
+			} else {
+				seed.isSimple = false;
+				seed.value = null;
+				seed.valueKind = ArpSeedValueKind.None;
+				break;
+			}
+		}
+		return seed;
+	}
+
 	inline public static function fromXmlBytes(bytes:Bytes, env:Null<ArpSeedEnv> = null):ArpSeed {
 		return new ArpXmlSeedReader().parseXmlBytes(bytes, env);
 	}

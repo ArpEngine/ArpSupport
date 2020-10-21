@@ -1,7 +1,5 @@
 package arp.seed.readers;
 
-import arp.seed.impl.ArpComplexSeed;
-import arp.seed.impl.ArpSimpleSeed;
 import arp.utils.ArpIdGenerator;
 
 class ArpTableSeedReader {
@@ -57,14 +55,14 @@ class ArpTableSeedReader {
 					case _:
 						// "value" is handled here
 						// "ref" is not supported
-						children.push(new ArpSimpleSeed(attrName, key, attr, env, ArpSeedValueKind.Ambigious));
+						children.push(ArpSeed.createSimple(attrName, key, attr, env, ArpSeedValueKind.Ambigious));
 				}
 			}
 			if (name == null) continue;
-			seeds.push(new ArpComplexSeed(typeName, className, name, key, heat, children, env));
+			seeds.push(ArpSeed.createComplex(typeName, className, name, key, heat, children, env));
 		};
 
 		// wrap with <data>
-		return new ArpComplexSeed("data", null, null, null, null, seeds, env);
+		return ArpSeed.createComplex("data", null, null, null, null, seeds, env);
 	}
 }
