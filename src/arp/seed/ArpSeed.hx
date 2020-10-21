@@ -15,7 +15,7 @@ class ArpSeed {
 	public var env(default, null):ArpSeedEnv;
 
 	public var value(default, null):Null<String>;
-	public var valueKind(get, never):ArpSeedValueKind;
+	public var valueKind(default, null):ArpSeedValueKind = ArpSeedValueKind.Literal;
 	public var isSimple(default, null):Bool = true;
 
 	public var className(default, null):Null<String> = null;
@@ -42,8 +42,6 @@ class ArpSeed {
 		this.key = key;
 		this.env = env;
 	}
-
-	private function get_valueKind():ArpSeedValueKind throw "not implemented";
 
 	inline public static function fromXmlBytes(bytes:Bytes, env:Null<ArpSeedEnv> = null):ArpSeed {
 		return new ArpXmlSeedReader().parseXmlBytes(bytes, env);
