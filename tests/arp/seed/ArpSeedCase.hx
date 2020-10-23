@@ -21,7 +21,7 @@ class ArpSeedCase {
 	public function testEmptyXmlSeed():Void {
 		var xml:Xml = Xml.parse('<root />').firstElement();
 		var seed:ArpSeed = ArpSeed.fromXml(xml);
-		assertTrue(seed.isSimple);
+		assertFalse(seed.isSimple);
 		assertMatch({typeName: "root", className: null, name: null, key: autoKey, value: null}, toHash(seed));
 		var iterator = seed.iterator();
 		assertFalse(iterator.hasNext());
@@ -93,7 +93,7 @@ class ArpSeedCase {
 		assertMatch({typeName: "data", className: null, name: null, key: null, value: null}, toHash(seed));
 		var iterator = seed.iterator();
 		assertTrue(iterator.hasNext());
-		assertMatch({typeName: "t1", className: "c1", name: "n1", key: autoKey, value: null}, toHash(iterator.next()));
+		assertMatch({typeName: "t1", className: "c1", name: "n1", key: autoKey, value: "v1"}, toHash(iterator.next()));
 		assertTrue(iterator.hasNext());
 		assertMatch({typeName: "lexical", className: null, name: "n2", key: autoKey, value: null}, toHash(iterator.next()));
 		assertTrue(iterator.hasNext());

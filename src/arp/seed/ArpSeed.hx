@@ -18,10 +18,10 @@ class ArpSeed {
 	public var name(default, null):Null<String> = null;
 	public var heat(default, null):Null<String> = null;
 
-	public var value(default, null):Null<String>;
 	public var valueKind(default, null):ArpSeedValueKind = ArpSeedValueKind.Literal;
-
+	private var simpleValue(default, null):Null<String>;
 	private var children:Null<Array<ArpSeed>>;
+
 	private var childrenWithEnv(get, null):Array<ArpSeed>;
 	private function get_childrenWithEnv():Array<ArpSeed> {
 		var value:Array<ArpSeed> = childrenWithEnv;
@@ -34,9 +34,21 @@ class ArpSeed {
 		return value;
 	}
 
+	public var value(get, never):Null<String>;
+	private function get_value():Null<String> {
+		return switch (this.valueKind) {
+			case ArpSeedValueKind.Complex:
+				for (child in this.childrenWithEnv) if (child.seedName == "value") return child.simpleValue;
+				return null;
+			case _:
+				simpleValue;
+		}
+	}
 	public function iterator():Iterator<ArpSeed> return if (children == null) new SingleIterator(this) else new SimpleArrayIterator(this.childrenWithEnv);
+
+	@:deprecated("use value != null")
 	public var isSimple(get, never):Bool;
-	private function get_isSimple():Bool return switch (this.valueKind) { case ArpSeedValueKind.Complex: false; case _: true; }
+	private function get_isSimple():Bool return this.value != null;
 
 	private function new(seedName:String, key:String, env:ArpSeedEnv) {
 		this.seedName = seedName;
@@ -47,7 +59,7 @@ class ArpSeed {
 	public static function createSimple(seedName:String, key:String, value:String, env:ArpSeedEnv, valueKind:ArpSeedValueKind):ArpSeed {
 		var seed:ArpSeed = new ArpSeed(seedName, key, env);
 		if (value == null) throw "value must be nonnull";
-		seed.value = value;
+		seed.simpleValue = value;
 		seed.valueKind = valueKind;
 		return seed;
 	}
@@ -61,10 +73,7 @@ class ArpSeed {
 		seed.children = children;
 		if (children.length == 0) {
 			seed.valueKind = ArpSeedValueKind.Empty;
-		} else if (children.length == 1 && children[0].seedName == "value") {
-			seed.value = children[0].value;
 		} else {
-			seed.value = null;
 			seed.valueKind = ArpSeedValueKind.Complex;
 		}
 		return seed;
