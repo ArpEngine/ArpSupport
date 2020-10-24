@@ -18,6 +18,8 @@ class ArpSeed {
 	public var name(default, null):Null<String> = null;
 	public var heat(default, null):Null<String> = null;
 
+	private var maybeRef:Bool = false;
+	@:deprecated("use maybeRef")
 	public var valueKind(default, null):ArpSeedValueKind = ArpSeedValueKind.Literal;
 	private var simpleValue(default, null):Null<String>;
 	private var children:Null<Array<ArpSeed>>;
@@ -36,12 +38,11 @@ class ArpSeed {
 
 	public var value(get, never):Null<String>;
 	private function get_value():Null<String> {
-		return switch (this.valueKind) {
-			case ArpSeedValueKind.Complex:
-				for (child in this.childrenWithEnv) if (child.seedName == "value") return child.simpleValue;
-				return null;
-			case _:
-				simpleValue;
+		return if (this.children != null) {
+			for (child in this.childrenWithEnv) if (child.seedName == "value") return child.simpleValue;
+			return null;
+		} else {
+			simpleValue;
 		}
 	}
 	public function iterator():Iterator<ArpSeed> return if (children == null) new SingleIterator(this) else new SimpleArrayIterator(this.childrenWithEnv);
@@ -61,6 +62,7 @@ class ArpSeed {
 		if (value == null) throw "value must be nonnull";
 		seed.simpleValue = value;
 		seed.valueKind = valueKind;
+		seed.maybeRef = switch (valueKind) {case ArpSeedValueKind.Ambigious | ArpSeedValueKind.Reference: true; case _: false;}
 		return seed;
 	}
 
@@ -76,6 +78,7 @@ class ArpSeed {
 		} else {
 			seed.valueKind = ArpSeedValueKind.Complex;
 		}
+		seed.maybeRef = false;
 		return seed;
 	}
 
