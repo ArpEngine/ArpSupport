@@ -45,10 +45,6 @@ class ArpSeed {
 	}
 	public function iterator():Iterator<ArpSeed> return if (children == null) new SingleIterator(this) else new SimpleArrayIterator(this.childrenWithEnv);
 
-	@:deprecated("use value != null")
-	public var isSimple(get, never):Bool;
-	private function get_isSimple():Bool return this.value != null;
-
 	private function new(seedName:String, key:String, env:ArpSeedEnv) {
 		this.seedName = seedName;
 		this.key = key;
