@@ -54,7 +54,7 @@ class ArpSeedEnvCase {
 
 	public function testAddSeeds():Void {
 		var env1:ArpSeedEnv = ArpSeedEnv.empty();
-		var seed:ArpSeed = ArpSeed.createSimple("tt", "kk", "vv", env1, ArpSeedValueKind.Literal);
+		var seed:ArpSeed = ArpSeed.createVerbatim("tt", "kk", "vv", env1);
 		env1.addSeeds("seed.key", "value", [seed]);
 		assertMatch([seed], env1.getDefaultSeeds("key"));
 	}

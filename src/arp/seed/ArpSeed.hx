@@ -19,8 +19,6 @@ class ArpSeed {
 	public var heat(default, null):Null<String> = null;
 
 	public var maybeRef:Bool = false;
-	@:deprecated("use maybeRef")
-	public var valueKind(default, null):ArpSeedValueKind = ArpSeedValueKind.Literal;
 	private var simpleValue(default, null):Null<String>;
 	private var children:Null<Array<ArpSeed>>;
 
@@ -57,12 +55,19 @@ class ArpSeed {
 		this.env = env;
 	}
 
-	public static function createSimple(seedName:String, key:String, value:String, env:ArpSeedEnv, valueKind:ArpSeedValueKind):ArpSeed {
+	public static function createVerbatim(seedName:String, key:String, value:String, env:ArpSeedEnv):ArpSeed {
 		var seed:ArpSeed = new ArpSeed(seedName, key, env);
 		if (value == null) throw "value must be nonnull";
 		seed.simpleValue = value;
-		seed.valueKind = valueKind;
-		seed.maybeRef = switch (valueKind) {case ArpSeedValueKind.Ambigious | ArpSeedValueKind.Reference: true; case _: false;}
+		seed.maybeRef = false;
+		return seed;
+	}
+
+	public static function createSimple(seedName:String, key:String, value:String, env:ArpSeedEnv):ArpSeed {
+		var seed:ArpSeed = new ArpSeed(seedName, key, env);
+		if (value == null) throw "value must be nonnull";
+		seed.simpleValue = value;
+		seed.maybeRef = true;
 		return seed;
 	}
 
@@ -73,11 +78,6 @@ class ArpSeed {
 		seed.name = name;
 		seed.heat = heat;
 		seed.children = children;
-		if (children.length == 0) {
-			seed.valueKind = ArpSeedValueKind.Empty;
-		} else {
-			seed.valueKind = ArpSeedValueKind.Complex;
-		}
 		seed.maybeRef = false;
 		return seed;
 	}

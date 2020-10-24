@@ -55,7 +55,7 @@ class ArpTableSeedReader {
 					case _:
 						// "value" is handled here
 						// "ref" is not supported
-						children.push(ArpSeed.createSimple(attrName, key, attr, env, ArpSeedValueKind.Ambigious));
+						children.push(ArpSeed.createSimple(attrName, key, attr, env));
 				}
 			}
 			if (name == null) continue;

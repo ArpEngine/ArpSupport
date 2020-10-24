@@ -37,7 +37,7 @@ class ArpXmlSeedReader {
 		switch (xml.nodeType) {
 			case XmlType.Document: xml = xml.firstElement();
 			case XmlType.Element:
-			case _: return ArpSeed.createSimple(xml.nodeName, uniqId, xml.nodeValue, env, ArpSeedValueKind.Ambigious);
+			case _: return ArpSeed.createSimple(xml.nodeName, uniqId, xml.nodeValue, env);
 		}
 
 		var idGen:ArpIdGenerator = new ArpIdGenerator();
@@ -76,11 +76,11 @@ class ArpXmlSeedReader {
 				case _:
 					// NOTE leaf seeds by xml attr are also treated as ref; text nodes are not
 					if (children == null) children = [];
-					children.push(ArpSeed.createSimple(attrName, idGen.next(), attr, innerEnv, ArpSeedValueKind.Ambigious));
+					children.push(ArpSeed.createSimple(attrName, idGen.next(), attr, innerEnv));
 			}
 		}
 
-		if (isRef) return ArpSeed.createSimple(typeName, key, value, env, ArpSeedValueKind.Reference);
+		if (isRef) return ArpSeed.createSimple(typeName, key, value, env);
 
 		for (node in xml) {
 			switch (node.nodeType) {
@@ -101,7 +101,7 @@ class ArpXmlSeedReader {
 
 		if (value == null && acceptsTextNodeValue) value = textNodeValue;
 		if (children == null) children = [];
-		if (value != null) children.push(ArpSeed.createSimple("value", key, value, innerEnv, ArpSeedValueKind.Literal));
+		if (value != null) children.push(ArpSeed.createVerbatim("value", key, value, innerEnv));
 		return ArpSeed.createComplex(typeName, className, name, key, heat, children, env);
 	}
 
@@ -116,7 +116,7 @@ class ArpXmlSeedReader {
 			switch (attrName) {
 				case "name": name = attr;
 				case "value": value = attr;
-				case _: seeds.push(ArpSeed.createSimple(attrName, idGen.next(), attr, env, ArpSeedValueKind.Ambigious));
+				case _: seeds.push(ArpSeed.createSimple(attrName, idGen.next(), attr, env));
 			}
 		}
 		for (node in xml) {
