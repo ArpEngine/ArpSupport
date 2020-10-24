@@ -18,7 +18,7 @@ class ArpSeed {
 	public var name(default, null):Null<String> = null;
 	public var heat(default, null):Null<String> = null;
 
-	private var maybeRef:Bool = false;
+	public var maybeRef:Bool = false;
 	@:deprecated("use maybeRef")
 	public var valueKind(default, null):ArpSeedValueKind = ArpSeedValueKind.Literal;
 	private var simpleValue(default, null):Null<String>;

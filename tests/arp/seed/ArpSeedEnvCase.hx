@@ -16,7 +16,8 @@ class ArpSeedEnvCase {
 		className: seed.className,
 		name: seed.name,
 		key: seed.key,
-		value: seed.value
+		value: seed.value,
+		ref: seed.maybeRef
 	};
 
 	public function testDiverge():Void {
@@ -76,11 +77,11 @@ class ArpSeedEnvCase {
 	public function testXmlEnvSeedsIteratorRootScope():Void {
 		var xml:Xml = Xml.parse('<key dummy="root"><env name="seed.key" value="value" a="b"><c /></env></key>').firstElement();
 		var seed:ArpSeed = ArpSeed.fromXml(xml);
-		assertMatch({typeName: "key", className: null, name: null, key: autoKey, value: null}, toHash(seed));
+		assertMatch({typeName: "key", className: null, name: null, key: autoKey, value: null, ref: false}, toHash(seed));
 		var iterator = seed.iterator();
 
 		assertTrue(iterator.hasNext());
-		assertMatch({typeName: "dummy", className: null, name: null, key: autoKey, value: "root"}, toHash(iterator.next()));
+		assertMatch({typeName: "dummy", className: null, name: null, key: autoKey, value: "root", ref: true}, toHash(iterator.next()));
 
 		assertFalse(iterator.hasNext());
 	}
@@ -108,27 +109,27 @@ class ArpSeedEnvCase {
 	public function testXmlEnvSeedsIteratorChildScope():Void {
 		var xml:Xml = Xml.parse('<root><key dummy="before" /><env name="seed.key" value="value" a="b"><c /></env><key dummy="after" /></root>').firstElement();
 		var seed:ArpSeed = ArpSeed.fromXml(xml);
-		assertMatch({typeName: "root", className: null, name: null, key: autoKey, value: null}, toHash(seed));
+		assertMatch({typeName: "root", className: null, name: null, key: autoKey, value: null, ref: false}, toHash(seed));
 		var iterator = seed.iterator();
 
 		assertTrue(iterator.hasNext());
 		var before:ArpSeed = iterator.next();
-		assertMatch({typeName: "key", className: null, name: null, key: autoKey, value: null}, toHash(before));
+		assertMatch({typeName: "key", className: null, name: null, key: autoKey, value: null, ref: false}, toHash(before));
 		var beforeIterator = before.iterator();
 		assertTrue(beforeIterator.hasNext());
-		assertMatch({typeName: "dummy", className: null, name: null, key: autoKey, value: "before"}, toHash(beforeIterator.next()));
+		assertMatch({typeName: "dummy", className: null, name: null, key: autoKey, value: "before", ref: true}, toHash(beforeIterator.next()));
 		assertFalse(beforeIterator.hasNext());
 
 		assertTrue(iterator.hasNext());
 		var after:ArpSeed = iterator.next();
-		assertMatch({typeName: "key", className: null, name: null, key: autoKey, value: null}, toHash(after));
+		assertMatch({typeName: "key", className: null, name: null, key: autoKey, value: null, ref: false}, toHash(after));
 		var afterIterator = after.iterator();
 		assertTrue(afterIterator.hasNext());
-		assertMatch({typeName: "a", className: null, name: null, key: autoKey, value: "b"}, toHash(afterIterator.next()));
+		assertMatch({typeName: "a", className: null, name: null, key: autoKey, value: "b", ref: true}, toHash(afterIterator.next()));
 		assertTrue(afterIterator.hasNext());
-		assertMatch({typeName: "c", className: null, name: null, key: autoKey, value: null}, toHash(afterIterator.next()));
+		assertMatch({typeName: "c", className: null, name: null, key: autoKey, value: null, ref: false}, toHash(afterIterator.next()));
 		assertTrue(afterIterator.hasNext());
-		assertMatch({typeName: "dummy", className: null, name: null, key: autoKey, value: "after"}, toHash(afterIterator.next()));
+		assertMatch({typeName: "dummy", className: null, name: null, key: autoKey, value: "after", ref: true}, toHash(afterIterator.next()));
 		assertFalse(afterIterator.hasNext());
 
 		assertFalse(iterator.hasNext());
