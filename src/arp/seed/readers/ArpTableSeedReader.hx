@@ -55,14 +55,14 @@ class ArpTableSeedReader {
 					case _:
 						// "value" is handled here
 						// "ref" is not supported
-						children.push(ArpSeed.createSimple(attrName, key, attr, env));
+						children.push(ArpSeed.createSimple(attrName, key, attr, env).withoutSource());
 				}
 			}
 			if (name == null) continue;
-			seeds.push(ArpSeed.createComplex(typeName, className, name, key, heat, children, env));
+			seeds.push(ArpSeed.createComplex(typeName, className, name, key, heat, children, env).withoutSource());
 		};
 
 		// wrap with <data>
-		return ArpSeed.createComplex("data", null, null, null, null, seeds, env);
+		return ArpSeed.createComplex("data", null, null, null, null, seeds, env).withoutSource();
 	}
 }

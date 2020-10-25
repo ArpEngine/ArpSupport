@@ -2,10 +2,12 @@ package arp.seed;
 
 import arp.iterators.SimpleArrayIterator;
 import arp.iterators.SingleIterator;
+import arp.seed.builder.ArpSeedWithoutSource;
 import arp.seed.readers.ArpCsvSeedReader;
 import arp.seed.readers.ArpTableSeedReader;
 import arp.seed.readers.ArpTsvSeedReader;
 import arp.seed.readers.ArpXmlSeedReader;
+import arp.seed.sources.IArpSeedSource;
 import haxe.io.Bytes;
 
 class ArpSeed {
@@ -21,6 +23,8 @@ class ArpSeed {
 	public var maybeRef:Bool = false;
 	private var simpleValue(default, null):Null<String>;
 	private var children:Null<Array<ArpSeed>>;
+
+	public var source(default, null):IArpSeedSource;
 
 	private var childrenWithEnv(get, null):Array<ArpSeed>;
 	private function get_childrenWithEnv():Array<ArpSeed> {
@@ -51,7 +55,7 @@ class ArpSeed {
 		this.env = env;
 	}
 
-	public static function createVerbatim(seedName:String, key:String, value:String, env:ArpSeedEnv):ArpSeed {
+	public static function createVerbatim(seedName:String, key:String, value:String, env:ArpSeedEnv):ArpSeedWithoutSource {
 		var seed:ArpSeed = new ArpSeed(seedName, key, env);
 		if (value == null) throw "value must be nonnull";
 		seed.simpleValue = value;
@@ -59,7 +63,7 @@ class ArpSeed {
 		return seed;
 	}
 
-	public static function createSimple(seedName:String, key:String, value:String, env:ArpSeedEnv):ArpSeed {
+	public static function createSimple(seedName:String, key:String, value:String, env:ArpSeedEnv):ArpSeedWithoutSource {
 		var seed:ArpSeed = new ArpSeed(seedName, key, env);
 		if (value == null) throw "value must be nonnull";
 		seed.simpleValue = value;
@@ -67,7 +71,7 @@ class ArpSeed {
 		return seed;
 	}
 
-	public static function createComplex(seedName:String, className:String, name:String, key:String, heat:String, children:Array<ArpSeed>, env:ArpSeedEnv):ArpSeed {
+	public static function createComplex(seedName:String, className:String, name:String, key:String, heat:String, children:Array<ArpSeed>, env:ArpSeedEnv):ArpSeedWithoutSource {
 		var seed:ArpSeed = new ArpSeed(seedName, key, env);
 
 		seed.className = className;
