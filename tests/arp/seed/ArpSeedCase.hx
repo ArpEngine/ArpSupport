@@ -69,6 +69,40 @@ class ArpSeedCase {
 		assertFalse(iterator.hasNext());
 	}
 
+	public function testCopy():Void {
+		var xml:Xml = Xml.parse('<data>value16<a />value32<b>valueb</b>value64</data>').firstElement();
+		var seed:ArpSeed = ArpSeed.fromXml(xml);
+
+		var withoutSource = seed.copy(false);
+		assertNotEquals(withoutSource, seed);
+		assertEquals(withoutSource.iterator().next(), seed.iterator().next());
+		assertNull(withoutSource.source);
+		assertMatch(toHash(withoutSource), toHash(seed));
+
+		var withSource = seed.copy(true);
+		assertNotEquals(withSource, seed);
+		assertEquals(withSource.iterator().next(), seed.iterator().next());
+		assertMatch(toHash(withSource), toHash(seed));
+		assertNotNull(withSource.source);
+	}
+
+	public function testDeepCopy():Void {
+		var xml:Xml = Xml.parse('<data>value16<a />value32<b>valueb</b>value64</data>').firstElement();
+		var seed:ArpSeed = ArpSeed.fromXml(xml);
+
+		var withoutSource = seed.deepCopy(false);
+		assertNotEquals(withoutSource, seed);
+		assertNotEquals(withoutSource.iterator().next(), seed.iterator().next());
+		assertNull(withoutSource.source);
+		assertMatch(toHash(withoutSource), toHash(seed));
+
+		var withSource = seed.deepCopy(true);
+		assertNotEquals(withSource, seed);
+		assertNotEquals(withSource.iterator().next(), seed.iterator().next());
+		assertMatch(toHash(withSource), toHash(seed));
+		assertNotNull(withSource.source);
+	}
+
 	public function testCsvSimpleSeed():Void {
 		var csv:String = "type,class,name,heat,value\nt1,c1,n1,h1,v1\n,,n2\n,,,\n";
 		var seed:ArpSeed = ArpSeed.fromCsvString(csv, "lexical");

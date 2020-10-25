@@ -82,6 +82,32 @@ class ArpSeed {
 		return seed;
 	}
 
+	public function copy(withSource:Bool = false):ArpSeed {
+		var result:ArpSeed = this.cloneSelf(withSource);
+		if (this.children != null) result.children = this.children.copy();
+		return result;
+	}
+
+	public function deepCopy(withSource:Bool = false):ArpSeed {
+		var result:ArpSeed = this.cloneSelf(withSource);
+		if (this.children != null) {
+			result.children = [for (child in this.children) child.deepCopy(withSource)];
+		}
+		return result;
+	}
+
+	inline private function cloneSelf(withSource:Bool):ArpSeed {
+		var result:ArpSeed = new ArpSeed(this.seedName, this.key, this.env);
+		result.className = this.className;
+		result.name = this.name;
+		result.heat = this.heat;
+
+		result.maybeRef = this.maybeRef;
+		result.simpleValue = this.simpleValue;
+		if (withSource) result.source = this.source;
+		return result;
+	}
+
 	inline public static function fromXmlBytes(bytes:Bytes, env:Null<ArpSeedEnv> = null):ArpSeed {
 		return new ArpXmlSeedReader().parseXmlBytes(bytes, env);
 	}
