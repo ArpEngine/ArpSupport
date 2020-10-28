@@ -37,6 +37,21 @@ class ArpSeedBuilderCase {
 		assertMatch({typeName: "seed1", className: "className3", name: "name4", key: "key2", value: "simpleValue6", ref: false}, toHash(seed));
 	}
 
+	public function testSimpleSeedValue():Void {
+		var builder:ArpSeedBuilder = ArpSeedBuilder.fromSeed(@:privateAccess new ArpSeed("dummySeed", "dummyKey", ArpSeedEnv.empty()));
+		builder.value = "valuevalue";
+		var seed:ArpSeed = builder.toSeed();
+		assertMatch("valuevalue", seed.value);
+	}
+
+	public function testComplexSeedValue():Void {
+		var builder:ArpSeedBuilder = ArpSeedBuilder.fromSeed(@:privateAccess new ArpSeed("dummySeed", "dummyKey", ArpSeedEnv.empty()));
+		@:privateAccess builder.children = [];
+		builder.value = "valuevalue";
+		var seed:ArpSeed = builder.toSeed();
+		assertMatch("valuevalue", seed.value);
+	}
+
 	public function testRoundTrip():Void {
 		var source:ArpSeed = createSeed();
 		var builder:ArpSeedBuilder = ArpSeedBuilder.fromSeed(source);

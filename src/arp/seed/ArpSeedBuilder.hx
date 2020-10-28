@@ -1,5 +1,6 @@
 package arp.seed;
 
+import arp.utils.ArpIdGenerator;
 import arp.ds.access.IListAmend.IListAmendCursor;
 import arp.ds.impl.ArrayList;
 import arp.seed.sources.IArpSeedSource;
@@ -39,6 +40,22 @@ abstract ArpSeedBuilder(ArpSeed) {
 	public var source(get, set):Null<IArpSeedSource>;
 	private function get_source():Null<IArpSeedSource> return this.source;
 	private function set_source(value:Null<IArpSeedSource>):Null<IArpSeedSource> return @:privateAccess this.source = value;
+
+	public var value(get, set):Null<String>;
+	private function get_value():Null<String> return this.value;
+	private function set_value(value:Null<String>):Null<String> {
+		return if (children != null) {
+			var idGen:ArpIdGenerator = new ArpIdGenerator();
+			for (child in children) {
+				if (@:privateAccess child.seedName == "value") return @:privateAccess child.simpleValue = value;
+				idGen.useId(child.key);
+			}
+			children.push(ArpSeed.createSimple("value", idGen.next(), value, env).withSource(source));
+			return value;
+		} else {
+			return simpleValue = value;
+		}
+	}
 
 	private function new(seed:ArpSeed) this = seed;
 
