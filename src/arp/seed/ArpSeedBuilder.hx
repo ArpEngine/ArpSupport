@@ -59,8 +59,21 @@ abstract ArpSeedBuilder(ArpSeed) {
 
 	private function new(seed:ArpSeed) this = seed;
 
-	public static function fromSeedCopy(seed:ArpSeed) return new ArpSeedBuilder(seed);
-	public static function fromSeed(seed:ArpSeed) return fromSeedCopy(seed.deepCopy());
+	public static function fromSeedCopy(seed:ArpSeed):ArpSeedBuilder return new ArpSeedBuilder(seed);
+	public static function fromSeed(seed:ArpSeed):ArpSeedBuilder return fromSeedCopy(seed.deepCopy());
+
+	public function keyGen():ArpIdGenerator {
+		var result:ArpIdGenerator = new ArpIdGenerator();
+		if (children != null) {
+			for (child in children) result.useId(child.key);
+		}
+		return result;
+	}
+
+	public function nextKey():String {
+		var keyGen:ArpIdGenerator = keyGen();
+		return keyGen.next();
+	}
 
 	public function amend():Iterator<IListAmendCursor<ArpSeed>> {
 		var list:ArrayList<ArpSeed> = new ArrayList<ArpSeed>();
