@@ -1,4 +1,4 @@
-package arp.seed;
+package arp.seed.readers;
 
 import haxe.io.Bytes;
 

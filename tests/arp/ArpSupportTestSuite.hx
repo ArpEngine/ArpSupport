@@ -43,6 +43,7 @@ import arp.persistable.JsonPersistIoCase;
 import arp.persistable.PackedPersistIoCase;
 import arp.persistable.PersistIoCase;
 import arp.persistable.VerbosePersistIoCase;
+import arp.seed.ArpSeedBuilderCase;
 import arp.seed.ArpSeedCase;
 import arp.seed.ArpSeedEnvCase;
 import arp.task.TaskRunnerCase;
@@ -141,6 +142,7 @@ class ArpSupportTestSuite {
 
 		r.load(ArpSeedEnvCase);
 		r.load(ArpSeedCase);
+		r.load(ArpSeedBuilderCase);
 	}
 
 
