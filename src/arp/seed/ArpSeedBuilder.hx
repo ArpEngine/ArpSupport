@@ -1,6 +1,5 @@
 package arp.seed;
 
-import arp.utils.ArpIdGenerator;
 import arp.ds.access.IListAmend.IListAmendCursor;
 import arp.ds.impl.ArrayList;
 import arp.seed.sources.IArpSeedSource;
@@ -45,10 +44,8 @@ abstract ArpSeedBuilder(ArpSeed) {
 	private function get_value():Null<String> return this.value;
 	private function set_value(value:Null<String>):Null<String> {
 		return if (children != null) {
-			var idGen:ArpIdGenerator = new ArpIdGenerator();
 			for (child in children) {
 				if (@:privateAccess child.seedName == "value") return @:privateAccess child.simpleValue = value;
-				idGen.useId(child.key);
 			}
 			children.push(ArpSeed.createSimple("value", null, value, env).withSource(source));
 			return value;
@@ -61,19 +58,6 @@ abstract ArpSeedBuilder(ArpSeed) {
 
 	public static function fromSeedCopy(seed:ArpSeed):ArpSeedBuilder return new ArpSeedBuilder(seed);
 	public static function fromSeed(seed:ArpSeed):ArpSeedBuilder return fromSeedCopy(seed.deepCopy());
-
-	public function keyGen():ArpIdGenerator {
-		var result:ArpIdGenerator = new ArpIdGenerator();
-		if (children != null) {
-			for (child in children) result.useId(child.key);
-		}
-		return result;
-	}
-
-	public function nextKey():String {
-		var keyGen:ArpIdGenerator = keyGen();
-		return keyGen.next();
-	}
 
 	public function amend():Iterator<IListAmendCursor<ArpSeed>> {
 		var list:ArrayList<ArpSeed> = new ArrayList<ArpSeed>();
