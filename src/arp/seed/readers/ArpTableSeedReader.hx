@@ -1,7 +1,5 @@
 package arp.seed.readers;
 
-import arp.utils.ArpIdGenerator;
-
 class ArpTableSeedReader {
 
 	/*
@@ -19,22 +17,21 @@ class ArpTableSeedReader {
 
 	inline public function parse(table:Array<Array<String>>, lexicalType:String = null, env:ArpSeedEnv = null):ArpSeed {
 		if (env == null) env = ArpSeedEnv.empty();
-		return parseInternal(table, lexicalType, ArpIdGenerator.first, env);
+		return parseInternal(table, lexicalType, env);
 	}
 
-	private function parseInternal(table:Array<Array<String>>, lexicalType:String, uniqId:String, env:ArpSeedEnv):ArpSeed {
+	private function parseInternal(table:Array<Array<String>>, lexicalType:String, env:ArpSeedEnv):ArpSeed {
 		if (table.length == 0) return null;
 
 		var header:Array<String> = table.shift();
 
-		var idGen:ArpIdGenerator = new ArpIdGenerator();
 		var seeds:Array<ArpSeed> = [];
 		for (row in table) {
 			var typeName:String = lexicalType;
 			var className:String = null;
 			var name:String = null;
 			var heat:String = null;
-			var key:String = idGen.next();
+			var key:Null<String> = null;
 			var children:Array<ArpSeed> = [];
 
 			for (i in 0...header.length) {

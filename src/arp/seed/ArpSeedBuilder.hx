@@ -50,7 +50,7 @@ abstract ArpSeedBuilder(ArpSeed) {
 				if (@:privateAccess child.seedName == "value") return @:privateAccess child.simpleValue = value;
 				idGen.useId(child.key);
 			}
-			children.push(ArpSeed.createSimple("value", idGen.next(), value, env).withSource(source));
+			children.push(ArpSeed.createSimple("value", null, value, env).withSource(source));
 			return value;
 		} else {
 			return simpleValue = value;

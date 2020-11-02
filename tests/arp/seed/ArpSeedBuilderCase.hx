@@ -1,6 +1,5 @@
 package arp.seed;
 
-import arp.utils.ArpIdGenerator;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import picotest.PicoAssert.*;
@@ -8,7 +7,7 @@ import picotest.PicoAssert.*;
 class ArpSeedBuilderCase {
 
 	private var autoKey(get, never):Matcher<Dynamic>;
-	public function get_autoKey():Matcher<Dynamic> return Matchers.startsWith(ArpIdGenerator.AUTO_HEADER);
+	public function get_autoKey():Matcher<Dynamic> return Matchers.nullValue();
 
 	private function createSeed():ArpSeed {
 		var xml:Xml = Xml.parse('<data>value16<a />value32<b>valueb</b>value64</data>').firstElement();

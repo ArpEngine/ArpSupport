@@ -1,6 +1,5 @@
 package arp.seed;
 
-import arp.utils.ArpIdGenerator;
 import picotest.PicoAssert.*;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -8,7 +7,7 @@ import org.hamcrest.Matchers;
 class ArpSeedCase {
 
 	private var autoKey(get, never):Matcher<Dynamic>;
-	public function get_autoKey():Matcher<Dynamic> return Matchers.startsWith(ArpIdGenerator.AUTO_HEADER);
+	public function get_autoKey():Matcher<Dynamic> return Matchers.nullValue();
 
 	private function toHash(seed:ArpSeed) return {
 		typeName: Std.string(seed.seedName),
