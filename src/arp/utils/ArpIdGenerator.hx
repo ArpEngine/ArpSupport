@@ -18,11 +18,4 @@ abstract ArpIdGenerator(Int) {
 		this++;
 		return (prefix == null) ? result : '$prefix$result';
 	}
-
-	inline public function useId(id:String):Void {
-		if (id.indexOf(AUTO_HEADER) == 0) {
-			var i:Null<Int> = Std.parseInt(id.substr(1));
-			if (i != null) if (this < i) this = i;
-		}
-	}
 }

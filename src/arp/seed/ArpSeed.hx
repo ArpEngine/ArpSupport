@@ -13,7 +13,7 @@ import haxe.io.Bytes;
 class ArpSeed {
 
 	public var seedName(default, null):String;
-	public var key(default, null):String;
+	public var key(default, null):Null<String>;
 	public var env(default, null):ArpSeedEnv;
 
 	public var className(default, null):Null<String> = null;
@@ -49,13 +49,15 @@ class ArpSeed {
 	}
 	public function iterator():Iterator<ArpSeed> return if (children == null) new SingleIterator(this) else new SimpleArrayIterator(this.childrenWithEnv);
 
-	private function new(seedName:String, key:String, env:ArpSeedEnv) {
+	inline public function keyOrAuto(autoKey:String):String return if (key != null) key else autoKey;
+
+	private function new(seedName:String, key:Null<String>, env:ArpSeedEnv) {
 		this.seedName = seedName;
 		this.key = key;
 		this.env = env;
 	}
 
-	public static function createVerbatim(seedName:String, key:String, value:String, env:ArpSeedEnv):ArpSeedWithoutSource {
+	public static function createVerbatim(seedName:String, key:Null<String>, value:String, env:ArpSeedEnv):ArpSeedWithoutSource {
 		var seed:ArpSeed = new ArpSeed(seedName, key, env);
 		if (value == null) throw "value must be nonnull";
 		seed.simpleValue = value;
@@ -63,7 +65,7 @@ class ArpSeed {
 		return seed;
 	}
 
-	public static function createSimple(seedName:String, key:String, value:String, env:ArpSeedEnv):ArpSeedWithoutSource {
+	public static function createSimple(seedName:String, key:Null<String>, value:String, env:ArpSeedEnv):ArpSeedWithoutSource {
 		var seed:ArpSeed = new ArpSeed(seedName, key, env);
 		if (value == null) throw "value must be nonnull";
 		seed.simpleValue = value;
@@ -71,7 +73,7 @@ class ArpSeed {
 		return seed;
 	}
 
-	public static function createComplex(seedName:String, className:String, name:String, key:String, heat:String, children:Array<ArpSeed>, env:ArpSeedEnv):ArpSeedWithoutSource {
+	public static function createComplex(seedName:String, className:String, name:String, key:Null<String>, heat:String, children:Array<ArpSeed>, env:ArpSeedEnv):ArpSeedWithoutSource {
 		var seed:ArpSeed = new ArpSeed(seedName, key, env);
 
 		seed.className = className;
