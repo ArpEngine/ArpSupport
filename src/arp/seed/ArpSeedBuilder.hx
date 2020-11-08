@@ -79,5 +79,33 @@ abstract ArpSeedBuilder(ArpSeed) {
 		return if (children == null) false else children.remove(seed);
 	}
 
+	inline public function createVerbatim(seedName:String, key:Null<String>, value:String):ArpSeedBuilder {
+		return new ArpSeedBuilder(ArpSeed.createVerbatim(seedName, key, value, env).withSource(source));
+	}
+
+	inline public function createSimple(seedName:String, key:Null<String>, value:String):ArpSeedBuilder {
+		return new ArpSeedBuilder(ArpSeed.createSimple(seedName, key, value, env).withSource(source));
+	}
+
+	inline public function createComplex(seedName:String, className:String, name:String, key:Null<String>, heat:String):ArpSeedBuilder {
+		return new ArpSeedBuilder(ArpSeed.createComplex(seedName, className, name, key, heat, [], env).withSource(source));
+	}
+
+	inline public function appendVerbatim(seedName:String, key:Null<String>, value:String):Void {
+		append(createVerbatim(seedName, key, value).toSeed());
+	}
+
+	inline public function prependVerbatim(seedName:String, key:Null<String>, value:String):Void {
+		prepend(createVerbatim(seedName, key, value).toSeed());
+	}
+
+	inline public function appendSimple(seedName:String, key:Null<String>, value:String):Void {
+		append(createSimple(seedName, key, value).toSeed());
+	}
+
+	inline public function prependSimple(seedName:String, key:Null<String>, value:String):Void {
+		prepend(createSimple(seedName, key, value).toSeed());
+	}
+
 	public function toSeed():ArpSeed return this;
 }
