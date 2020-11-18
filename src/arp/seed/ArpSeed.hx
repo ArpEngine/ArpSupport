@@ -51,6 +51,8 @@ class ArpSeed {
 
 	inline public function keyOrAuto(autoKey:String):String return if (key != null) key else autoKey;
 
+	inline public function query():ArpSeedQuery return new ArpSeedQuery(this);
+
 	inline public function invalidate():ArpSeed {
 		this.childrenWithEnv = null;
 		return this;
