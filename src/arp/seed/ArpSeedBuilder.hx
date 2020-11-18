@@ -107,5 +107,5 @@ abstract ArpSeedBuilder(ArpSeed) {
 		prepend(createSimple(seedName, key, value).toSeed());
 	}
 
-	public function toSeed():ArpSeed return this;
+	inline public function toSeed():ArpSeed return this.invalidate();
 }
