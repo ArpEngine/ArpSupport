@@ -54,6 +54,8 @@ abstract ArpSeedBuilder(ArpSeed) {
 		}
 	}
 
+	inline public function query():ArpSeedQuery return new ArpSeedQuery(this);
+
 	private function new(seed:ArpSeed) this = seed;
 
 	public static function fromSeedCopy(seed:ArpSeed):ArpSeedBuilder return new ArpSeedBuilder(seed);
@@ -107,5 +109,5 @@ abstract ArpSeedBuilder(ArpSeed) {
 		prepend(createSimple(seedName, key, value).toSeed());
 	}
 
-	public function toSeed():ArpSeed return this;
+	inline public function toSeed():ArpSeed return this.invalidate();
 }
